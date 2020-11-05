@@ -1,0 +1,1 @@
+export const ACTIVITY_STATUS = ['Cancelled', 'Complete', 'Available'];
