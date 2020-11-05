@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: 'myactivities', component: HomeComponent, canActivate: [LogoutGuardService] },
   {
     path: 'auth',
-    loadChildren: () => import("./modules/login/login.module").then((m) => m.LoginModule),
+    loadChildren: () => import("./modules/auth/auth.module").then((m) => m.AuthModule),
   },
   {
     path: 'user',

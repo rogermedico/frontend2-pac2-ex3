@@ -22,4 +22,4 @@ const routes: Routes = [
   exports: [RouterModule],
   providers: [PersonalDataGuard]
 })
-export class LoginRoutingModule { }
+export class AuthRoutingModule { }
