@@ -1,1 +1,4 @@
-export const USER_TYPES = ['tourist', 'company'];
+export enum USER_TYPES {
+  tourist = 'tourist',
+  company = 'company'
+};

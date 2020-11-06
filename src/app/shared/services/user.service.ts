@@ -1,10 +1,12 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, Subject } from "rxjs";
-import { map, tap } from "rxjs/operators";
+import { Observable, of, Subject } from "rxjs";
+import { catchError, flatMap, map, mergeMap, switchMap, tap } from "rxjs/operators";
 import { User } from '@models/user.model';
 import { API } from '@constants/api.constant';
 import { ActivitiesService } from '@services/activities.service';
+import { Login } from '@models/login.model';
+import { MessageService } from '@services/message.service';
 
 @Injectable({
   providedIn: "root",
@@ -18,7 +20,7 @@ export class UserService {
   private profileDataSavedVar: boolean = true;
   private userLoggedInVar: User;
 
-  constructor(private http: HttpClient, private as: ActivitiesService) { }
+  constructor(private http: HttpClient, private as: ActivitiesService, private ms: MessageService) { }
 
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(API.users);
@@ -40,34 +42,61 @@ export class UserService {
   //   );
   // }
 
-  login(user: User): Observable<any> {
-    user.loggedIn = true;
-    return this.http.put(API.users, user, this.httpOptions).pipe(
-      tap(() => {
+  login(loginInfo: Login): Observable<User> {
+    return this.getUserByEmail(loginInfo.username).pipe(
+      tap(user => {
+        if (user && (user.password === loginInfo.password)) {
+          /* el loggedIn de user potser s'ha d'eliminar */
+          user = { ...user, loggedIn: true };
+          this.http.put<User>(API.users, user, this.httpOptions);
+          return of(user);
+        }
+        else {
+          throw 'login error';
+        }
+      }),
+      /* aixo ha d'anar fora d'aqui */
+      tap(user => {
         this.userLoggedInVar = user;
         this.as.getActivities().subscribe();
         this.userLoggedInRefreshed$.next();
       })
-    );
+      /****************************** */
+    )
   }
 
-  logout(): Observable<any> {
-    this.userLoggedInVar.loggedIn = false;
-    return this.http.put(API.users, this.userLoggedInVar, this.httpOptions).pipe(
+  logout(user: User): Observable<any> {
+    /* el loggedIn de user potser s'ha d'eliminar */
+    user = { ...user, loggedIn: false };
+    return this.http.put(API.users, user, this.httpOptions).pipe(
+      /* aixo ha d'anar fora d'aqui */
       tap(() => {
         this.userLoggedInVar = undefined;
         this.userLoggedInRefreshed$.next();
-      })
+      }),
+      /******************************** */
+
     );
   }
 
-  register(user: User): Observable<any> {
-    return this.http.post(API.users, user, this.httpOptions).pipe(
-      tap(() => {
-        this.userLoggedInVar = user;
-        this.userLoggedInRefreshed$.next();
+  register(user: User): Observable<User> {
+    return this.getUserByEmail(user.email).pipe(
+      flatMap(u => {
+        if (!u) {
+          /* aixo ha d'anar fora d'aqui */
+          this.userLoggedInVar = user;
+          this.userLoggedInRefreshed$.next();
+          /***************************** */
+          return this.http.post<User>(API.users, user, this.httpOptions)
+        }
+        else {
+          throw 'register error';
+        }
+
       })
     );
+
+
   }
 
   updateUser(user: User): Observable<any> {

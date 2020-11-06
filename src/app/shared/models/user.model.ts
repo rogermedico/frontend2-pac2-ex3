@@ -5,13 +5,14 @@ import { Language } from '@models/language.model';
 
 
 export interface User {
+  [x: string]: any;
   id?: number;
   name: string;
   surname?: string;
   companyName?: string;
   companyDescription?: string;
   cif?: string;
-  type: typeof USER_TYPES[number];
+  type: USER_TYPES;
   email: string;
   password: string;
   birthDate?: string;

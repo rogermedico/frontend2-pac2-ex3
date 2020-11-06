@@ -1,17 +1,30 @@
+/* default */
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
+/* in memory web api */
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './shared/services/in-memory-data.service';
 
+/* ngrx */
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { reducers } from '@store/root.reducer';
+import { effects } from '@store/root.effects';
+
+/* components */
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './views/home/home.component';
-import { HeaderComponent } from './views/header/header.component';
-import { FooterComponent } from './views/footer/footer.component';
+import { HomeComponent } from '@views/home/home.component';
+import { HeaderComponent } from '@views/header/header.component';
+import { FooterComponent } from '@views/footer/footer.component';
+
 import { ActivitiesModule } from './modules/activities/activities.module';
+
 
 @NgModule({
   declarations: [
@@ -28,7 +41,15 @@ import { ActivitiesModule } from './modules/activities/activities.module';
     HttpClientModule,
     HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, { dataEncapsulation: false }
-    )
+    ),
+
+
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot(effects),
+
+    /* router in state */
+    // StoreRouterConnectingModule.forRoot({ stateKey: 'router' }),
+    StoreDevtoolsModule.instrument(),
   ],
   providers: [],
   bootstrap: [AppComponent]

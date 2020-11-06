@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { InMemoryDbService } from 'angular-in-memory-web-api';
 import { User } from '@models/user.model';
 import { Activity } from '@models/activity.model';
+import { USER_TYPES } from '@constants/user-types.constant';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class InMemoryDataService implements InMemoryDbService {
         id: 1,
         name: "roger",
         surname: "medico",
-        type: "tourist",
+        type: USER_TYPES.tourist,
         email: "rmedico@uoc.edu",
         password: "12341234",
         loggedIn: false,
@@ -45,7 +46,7 @@ export class InMemoryDataService implements InMemoryDbService {
       {
         id: 2,
         name: "Activitats UOC",
-        type: "company",
+        type: USER_TYPES.company,
         email: "company@uoc.edu",
         password: "12341234",
         loggedIn: false,
@@ -59,7 +60,7 @@ export class InMemoryDataService implements InMemoryDbService {
       {
         id: 3,
         name: "Enoturisme Priorat",
-        type: "company",
+        type: USER_TYPES.company,
         email: "enoturisme@priorat.cat",
         password: "12341234",
         loggedIn: false,
@@ -82,7 +83,7 @@ export class InMemoryDataService implements InMemoryDbService {
         id: 4,
         name: "joan",
         surname: "pere",
-        type: "tourist",
+        type: USER_TYPES.tourist,
         email: "joan@uoc.edu",
         password: "12341234",
         loggedIn: false,
