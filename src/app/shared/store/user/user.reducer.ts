@@ -119,6 +119,60 @@ const _userReducer = createReducer(defaultUserState,
     }
   }),
 
+  /* create language */
+  on(UserActions.UserCreateLanguage, state => {
+    return {
+      ...state,
+      loading: true
+    }
+  }),
+
+  /* create language success */
+  on(UserActions.UserCreateLanguageSuccess, (state, { user }) => {
+    return {
+      ...state,
+      user: user,
+      loading: false
+    }
+  }),
+
+  /* create language error */
+  on(UserActions.UserCreateLanguageError, (state, { err }) => {
+    /* passar l'error a un servei de missatges ? */
+    console.log('ERROR: ', err)
+    return {
+      ...state,
+      loading: false
+    }
+  }),
+
+  /* update language */
+  on(UserActions.UserUpdateLanguage, state => {
+    return {
+      ...state,
+      loading: true
+    }
+  }),
+
+  /* update language success */
+  on(UserActions.UserUpdateLanguageSuccess, (state, { user }) => {
+    return {
+      ...state,
+      user: user,
+      loading: false
+    }
+  }),
+
+  /* update language error */
+  on(UserActions.UserUpdateLanguageError, (state, { err }) => {
+    /* passar l'error a un servei de missatges ? */
+    console.log('ERROR: ', err)
+    return {
+      ...state,
+      loading: false
+    }
+  }),
+
   /* delete language */
   on(UserActions.UserDeleteLanguage, state => {
     return {

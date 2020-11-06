@@ -57,6 +57,40 @@ export class UserEffects {
     ))
   ));
 
+  /* create language */
+  createLanguage$ = createEffect(() => this.actions$.pipe(
+    ofType(UserActions.UserActionTypes.USER_CREATE_LANGUAGE),
+    mergeMap((action: { type: string, user: User, language: Language }) => {
+      const updatedUser = { ...action.user, languages: [...action.user.languages, action.language] };
+      return this.us.updateUser(updatedUser).pipe(
+        map(() => {
+          return { type: UserActions.UserActionTypes.USER_CREATE_LANGUAGE_SUCCESS, user: updatedUser }
+        }),
+        catchError(err => of({ type: UserActions.UserActionTypes.USER_CREATE_LANGUAGE_ERROR, err: err }))
+      )
+    })
+  ));
+
+  /* update language */
+  updateLanguage$ = createEffect(() => this.actions$.pipe(
+    ofType(UserActions.UserActionTypes.USER_UPDATE_LANGUAGE),
+    mergeMap((action: { type: string, user: User, oldLanguage: Language, newLanguage: Language }) => {
+      const updatedUser = {
+        ...action.user,
+        languages: action.user.languages.map(l => {
+          if (l === action.oldLanguage) return action.newLanguage;
+          else return l;
+        })
+      };
+      return this.us.updateUser(updatedUser).pipe(
+        map(() => {
+          return { type: UserActions.UserActionTypes.USER_UPDATE_LANGUAGE_SUCCESS, user: updatedUser }
+        }),
+        catchError(err => of({ type: UserActions.UserActionTypes.USER_UPDATE_LANGUAGE_ERROR, err: err }))
+      )
+    })
+  ));
+
   /* delete language */
   deleteLanguage$ = createEffect(() => this.actions$.pipe(
     ofType(UserActions.UserActionTypes.USER_DELETE_LANGUAGE),

@@ -20,7 +20,7 @@ export enum UserActionTypes {
   USER_UPDATE_PERSONAL_DATA_SUCCESS = '[User/Profile] USER_UPDATE_PERSONAL_DATA_SUCCESS',
   USER_UPDATE_PERSONAL_DATA_ERROR = '[User/Profile] USER_UPDATE_PERSONAL_DATA_ERROR',
 
-  USER_CREATE_LANGUAGE = '[User/Language] USER_CREATE_LANGUAGE_DATA',
+  USER_CREATE_LANGUAGE = '[User/Language] USER_CREATE_LANGUAGE',
   USER_CREATE_LANGUAGE_SUCCESS = '[User/Language] USER_CREATE_LANGUAGE_SUCCESS',
   USER_CREATE_LANGUAGE_ERROR = '[User/Language] USER_CREATE_LANGUAGE_ERROR',
 
@@ -54,12 +54,12 @@ export const UserUpdatePersonalDataSuccess = createAction(UserActionTypes.USER_U
 export const UserUpdatePersonalDataError = createAction(UserActionTypes.USER_UPDATE_PERSONAL_DATA_ERROR, props<{ err: String }>());
 
 /* create language */
-export const UserCreateLanguage = createAction(UserActionTypes.USER_CREATE_LANGUAGE, props<{ user: User }>());
-export const UserCreateLanguageSuccess = createAction(UserActionTypes.USER_CREATE_LANGUAGE_SUCCESS);
+export const UserCreateLanguage = createAction(UserActionTypes.USER_CREATE_LANGUAGE, props<{ user: User, language: Language }>());
+export const UserCreateLanguageSuccess = createAction(UserActionTypes.USER_CREATE_LANGUAGE_SUCCESS, props<{ user: User }>());
 export const UserCreateLanguageError = createAction(UserActionTypes.USER_CREATE_LANGUAGE_ERROR, props<{ err: String }>());
 
 /* update language */
-export const UserUpdateLanguage = createAction(UserActionTypes.USER_UPDATE_LANGUAGE, props<{ user: User }>());
+export const UserUpdateLanguage = createAction(UserActionTypes.USER_UPDATE_LANGUAGE, props<{ user: User, oldLanguage: Language, newLanguage: Language }>());
 export const UserUpdateLanguageSuccess = createAction(UserActionTypes.USER_UPDATE_LANGUAGE_SUCCESS, props<{ user: User }>());
 export const UserUpdateLanguageError = createAction(UserActionTypes.USER_UPDATE_LANGUAGE_ERROR, props<{ err: String }>());
 
