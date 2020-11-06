@@ -44,7 +44,7 @@ export class UserService {
 
   login(loginInfo: Login): Observable<User> {
     return this.getUserByEmail(loginInfo.username).pipe(
-      tap(user => {
+      flatMap(user => {
         if (user && (user.password === loginInfo.password)) {
           /* el loggedIn de user potser s'ha d'eliminar */
           user = { ...user, loggedIn: true };
@@ -96,13 +96,13 @@ export class UserService {
       })
     );
 
-
   }
 
   updateUser(user: User): Observable<any> {
     this.userLoggedInVar = user;
     return this.http.put(API.users, user, this.httpOptions).pipe(
       // tap(() => this.refreshUserService$.next())
+      tap(() => this.profileDataSaved = true)
     );
   }
 

@@ -4,7 +4,7 @@ import { User } from '@models/user.model';
 import { Store } from '@ngrx/store';
 // import { UserService } from '@services/user.service';
 import { Observable } from 'rxjs';
-import * as AuthSelectors from '@store/auth/auth.selector';
+import * as UserSelectors from '@store/user/user.selector';
 import { USER_TYPES } from '@constants/user-types.constant';
 
 @Component({
@@ -16,7 +16,7 @@ export class HeaderComponent implements OnInit {
 
   public title: string = 'UOC activities organizer';
 
-  public userLoggedIn$: Observable<User> = this.store$.select(AuthSelectors.selectUser);
+  public userLoggedIn$: Observable<User> = this.store$.select(UserSelectors.selectUser);
   // public userLoggedIn: User;
   public userTypes = USER_TYPES;
 

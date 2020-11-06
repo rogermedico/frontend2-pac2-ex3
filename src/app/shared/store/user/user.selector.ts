@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { AppStore } from '@models/store.model';
-import { AuthState } from '@store/auth/auth.state';
+import { UserState } from '@store/user/user.state';
 
 
 /* Select a feature from state, in this case we only have one feature called todoList but 
@@ -13,6 +13,8 @@ import { AuthState } from '@store/auth/auth.state';
  * an optimization to get a top level feature state (acording to ngrx documentation).
  * Since todoList is a top level feature we better use createFeatureSelector.
  */
-export const selectAuth = createFeatureSelector<AppStore, AuthState>('auth');
+export const selectUserState = createFeatureSelector<AppStore, UserState>('userState');
 
-export const selectUser = createSelector(selectAuth, (state: AuthState) => state.user);
+export const selectUser = createSelector(selectUserState, (state: UserState) => state.user);
+export const selectEducation = createSelector(selectUserState, (state: UserState) => state.user.education);
+export const selectLanguages = createSelector(selectUserState, (state: UserState) => state.user.languages);

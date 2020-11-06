@@ -17,7 +17,7 @@ export interface User {
   password: string;
   birthDate?: string;
   phone?: number;
-  nationality?: typeof NATIONALITIES[number];
+  nationality?: NATIONALITIES;
   nif?: string;
   aboutMe?: string;
   education: Education[];

@@ -1,2 +1,2 @@
-import { AuthEffects } from './auth/auth.effects';
-export const effects = [AuthEffects];
+import { UserEffects } from './user/user.effects';
+export const effects = [UserEffects];

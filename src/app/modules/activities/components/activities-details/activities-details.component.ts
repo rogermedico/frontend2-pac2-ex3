@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Activity } from '@models/activity.model';
+import { AppStore } from '@models/store.model';
 import { User } from '@models/user.model';
+import { Store } from '@ngrx/store';
 import { ActivitiesService } from '@services/activities.service';
 import { UserService } from '@services/user.service';
+import { Observable } from 'rxjs';
+import * as UserSelectors from '@store/user/user.selector';
 import { ActivitiesFavoritesService } from '../../services/activities-favorites.service';
 
 @Component({
@@ -18,11 +22,13 @@ export class ActivitiesDetailsComponent implements OnInit {
   public user: User;
   public favorite: boolean;
   public status: string;
+  public userLoggedIn$: Observable<User> = this.store$.select(UserSelectors.selectUser);
 
-  constructor(private us: UserService, private as: ActivitiesService, private favService: ActivitiesFavoritesService, private router: Router) { }
+  constructor(/*private us: UserService,*/ private as: ActivitiesService, private favService: ActivitiesFavoritesService, private router: Router, private store$: Store<AppStore>) { }
 
   ngOnInit(): void {
-    this.user = this.us.userLoggedIn;
+    // this.user = this.us.userLoggedIn;
+    this.userLoggedIn$.subscribe(userLoggedIn => this.user = userLoggedIn);
     this.as.activityToShowRefreshed().subscribe(
       () => {
         this.activity = this.as.activityToShow;

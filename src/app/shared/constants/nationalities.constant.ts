@@ -1,1 +1,6 @@
-export const NATIONALITIES = ['ES', 'FR', 'IT', 'PT'];
+export enum NATIONALITIES {
+  es = 'ES',
+  fr = 'FR',
+  it = 'IT',
+  pt = 'PT'
+};

@@ -5,10 +5,14 @@ import { CATEGORY_TYPES } from '@constants/category-types.constant';
 import { LANGUAGES } from '@constants/language.constant';
 import { SUBCATEGORY_TYPES_BEACH, SUBCATEGORY_TYPES_CULTURE, SUBCATEGORY_TYPES_ENOTURISME } from '@constants/subcategory-types.constant';
 import { Activity } from '@models/activity.model';
+import { AppStore } from '@models/store.model';
 import { User } from '@models/user.model';
+import { Store } from '@ngrx/store';
 import { ActivitiesService } from '@services/activities.service';
 import { UserService } from '@services/user.service';
 import { maxCapacityValidator } from '@validators/max-capacity.validator';
+import { Observable } from 'rxjs';
+import * as UserSelectors from '@store/user/user.selector';
 
 @Component({
   selector: 'app-admin-activities-crud',
@@ -19,7 +23,8 @@ export class AdminActivitiesCrudComponent implements OnInit {
 
 
   public title: String;
-  public userLoggedIn: User;
+  public user: User;
+  public userLoggedIn$: Observable<User> = this.store$.select(UserSelectors.selectUser);
   public activity: Activity = {
     name: null,
     category: null,
@@ -41,12 +46,14 @@ export class AdminActivitiesCrudComponent implements OnInit {
   public subcategoryBeach: string[] = SUBCATEGORY_TYPES_BEACH;
   public languages: string[] = LANGUAGES;
 
-  constructor(private fb: FormBuilder, private us: UserService, private as: ActivitiesService, private activatedRoute: ActivatedRoute, private router: Router) { }
+  constructor(private fb: FormBuilder, /*private us: UserService,*/ private as: ActivitiesService, private activatedRoute: ActivatedRoute, private router: Router, private store$: Store<AppStore>) { }
 
   ngOnInit(): void {
+    // this.userLoggedIn = this.us.userLoggedIn;
+    this.userLoggedIn$.subscribe(userLoggedIn => this.user = userLoggedIn);
     this.activityIndex = parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
     this.activityIndex = Number.isNaN(this.activityIndex) ? null : this.activityIndex;
-    this.userLoggedIn = this.us.userLoggedIn;
+
     if (this.activityIndex != null) {
       this.activity = this.as.activities.find((ac) => ac.id === this.activityIndex);
       this.title = 'Edit activity';
@@ -107,21 +114,21 @@ export class AdminActivitiesCrudComponent implements OnInit {
       miniumCapacity: this.miniumCapacity.value,
       maxCapacity: this.maxCapacity.value,
       state: this.state.value,
-      owner: this.userLoggedIn.id,
+      owner: this.user.id,
       participatingUsers: this.state.value != 'Cancelled' ? this.activity.participatingUsers : []
     };
 
     if (this.activityIndex != null) {
       activity.id = this.activityIndex;
       this.as.updateActivity(activity).subscribe(
-        () => console.log(`Activity ${this.activityIndex} from user ${this.userLoggedIn.email} updated.`)
+        () => console.log(`Activity ${this.activityIndex} from user ${this.user.email} updated.`)
       )
     }
     else {
       this.as.createActivity(activity).subscribe(
         () => {
           this.as.getActivities().subscribe();
-          console.log(`Created new activity from user ${this.userLoggedIn.email}`);
+          console.log(`Created new activity from user ${this.user.email}`);
         }
       );
     }

@@ -1,6 +1,6 @@
 import { User } from '@models/user.model';
 
-export interface AuthState {
+export interface UserState {
   user: User;
   loading: boolean;
 }

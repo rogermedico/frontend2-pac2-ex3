@@ -1,7 +1,7 @@
 import { routerReducer } from '@ngrx/router-store';
-import { authReducer } from './auth/auth.reducer';
+import { userReducer } from './user/user.reducer';
 
 export const reducers = {
-  auth: authReducer,
+  userState: userReducer,
   router: routerReducer
 };

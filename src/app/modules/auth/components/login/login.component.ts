@@ -5,8 +5,8 @@ import { UserService } from '@services/user.service';
 import { Login } from '@models/login.model';
 import { Store } from '@ngrx/store';
 import { AppStore } from '@models/store.model';
-import * as AuthActions from '@store/auth/auth.action';
-import * as AuthSelectors from '@store/auth/auth.selector';
+import * as UserActions from '@store/user/user.action';
+import * as UserSelectors from '@store/user/user.selector';
 import { Observable } from 'rxjs';
 import { User } from '@models/user.model';
 import { tap } from 'rxjs/operators';
@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
       password: this.password.value
     }
 
-    this.store$.dispatch(AuthActions.UserLogin({ loginInfo: loginInfo }));
+    this.store$.dispatch(UserActions.UserLogin({ loginInfo: loginInfo }));
     this.wrongCredentials = false;
     this.router.navigate(['']);
 

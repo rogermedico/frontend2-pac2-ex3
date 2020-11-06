@@ -1,5 +1,5 @@
-import { AuthState } from '@store/auth/auth.state';
+import { UserState } from '@store/user/user.state';
 
 export interface AppStore {
-  auth: AuthState;
+  userState: UserState;
 }

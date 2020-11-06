@@ -7,7 +7,7 @@ import { User } from "@models/user.model";
 import { UserService } from '@services/user.service';
 import { Store } from '@ngrx/store';
 import { AppStore } from '@models/store.model';
-import * as AuthActions from '@store/auth/auth.action';
+import * as UserActions from '@store/user/user.action';
 
 @Component({
   selector: "app-register",
@@ -51,7 +51,7 @@ export class RegisterComponent implements OnInit {
       languages: []
     }
 
-    this.store$.dispatch(AuthActions.UserRegister({ user: newUser }));
+    this.store$.dispatch(UserActions.UserRegister({ user: newUser }));
     this.router.navigate(['']);
 
 

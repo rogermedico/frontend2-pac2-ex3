@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppStore } from '@models/store.model';
 import { Store } from '@ngrx/store';
-import * as AuthActions from '@store/auth/auth.action';
-import * as AuthSelectors from '@store/auth/auth.selector';
+import * as UserActions from '@store/user/user.action';
+import * as UserSelectors from '@store/user/user.selector';
 import { UserService } from '@services/user.service';
 import { Observable } from 'rxjs';
 import { User } from '@models/user.model';
@@ -16,7 +16,7 @@ import { count, map, take, tap } from 'rxjs/operators';
 })
 export class LogoutComponent implements OnInit {
 
-  public userLoggedIn$: Observable<User> = this.store$.select(AuthSelectors.selectUser);
+  public userLoggedIn$: Observable<User> = this.store$.select(UserSelectors.selectUser);
 
   constructor(private store$: Store<AppStore>, private router: Router) { }
 
@@ -30,7 +30,7 @@ export class LogoutComponent implements OnInit {
     this.userLoggedIn$.pipe(
       take(1)
     ).subscribe(user => {
-      this.store$.dispatch(AuthActions.UserLogout({ user: user }));
+      this.store$.dispatch(UserActions.UserLogout({ user: user }));
     })
     // )
 
