@@ -2,20 +2,22 @@ import { Injectable } from "@angular/core";
 import { UserService } from '@services/user.service';
 import { Activity } from '@models/activity.model';
 import { ActivitiesService } from '@services/activities.service';
+import { User } from '@models/user.model';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: "root",
 })
 export class ActivitiesFavoritesService {
 
-  constructor(private us: UserService, private as: ActivitiesService) { }
+  constructor(private us: UserService/*, private as: ActivitiesService*/) { }
 
-  isFavorite(ac: Activity): null | boolean {
+  isFavorite(user: User, ac: Activity): null | boolean {
     if (!this.us.userLoggedIn) {
       return null;
     }
     else {
-      const storedFavs: number[] = JSON.parse(localStorage.getItem(this.us.userLoggedIn.email));
+      const storedFavs: number[] = JSON.parse(localStorage.getItem(user.email));
       if (storedFavs == null) {
         return false;
       }
@@ -30,24 +32,24 @@ export class ActivitiesFavoritesService {
     }
   }
 
-  toggleFavorite(ac: Activity, route: String): boolean {
-    const storedFavs: number[] = JSON.parse(localStorage.getItem(this.us.userLoggedIn.email));
+  toggleFavorite(user: User, activityId: number): Observable<boolean> {
+    const storedFavs: number[] = JSON.parse(localStorage.getItem(user.email));
 
     if (storedFavs == null) {
-      localStorage.setItem(this.us.userLoggedIn.email, JSON.stringify([ac.id]));
-      return true;
+      localStorage.setItem(this.us.userLoggedIn.email, JSON.stringify([activityId]));
+      return of(true);
     }
     else {
-      const favFound = storedFavs.findIndex(id => id === ac.id);
+      const favFound = storedFavs.findIndex(id => id === activityId);
       if (favFound === -1) {
-        storedFavs.push(ac.id);
+        storedFavs.push(activityId);
         localStorage.setItem(this.us.userLoggedIn.email, JSON.stringify(storedFavs));
-        return true;
+        return of(true);
       }
       else {
         storedFavs.splice(favFound, 1);
         localStorage.setItem(this.us.userLoggedIn.email, JSON.stringify(storedFavs));
-        return false;
+        return of(false);
       }
 
     }

@@ -1,13 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '@services/user.service';
+import { AppStore } from '@models/store.model';
+import { Store } from '@ngrx/store';
+import * as ActivityActions from '@store/activity/activity.action';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
-  constructor(private us: UserService) { }
+  constructor(private store$: Store<AppStore>) { }
+
+  ngOnInit(): void {
+    this.store$.dispatch(ActivityActions.ActivitiesLoad());
+  }
 
 }

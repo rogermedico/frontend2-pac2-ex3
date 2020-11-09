@@ -279,6 +279,32 @@ const _userReducer = createReducer(defaultUserState,
       ...state,
       loading: false
     }
+  }),
+
+  /* toggle favorite activity */
+  on(UserActions.UserDeleteEducation, state => {
+    return {
+      ...state,
+      loading: true
+    }
+  }),
+
+  /* toggle favorite activity success */
+  on(UserActions.UserDeleteEducationSuccess, (state, { user }) => {
+    return {
+      ...state,
+      loading: false
+    }
+  }),
+
+  /* toggle favorite activity error */
+  on(UserActions.UserDeleteEducationError, (state, { err }) => {
+    /* passar l'error a un servei de missatges ? */
+    console.log('ERROR: ', err)
+    return {
+      ...state,
+      loading: false
+    }
   })
 
 );

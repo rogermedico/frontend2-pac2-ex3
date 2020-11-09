@@ -5,7 +5,6 @@ import { Language } from '@models/language.model';
 
 
 export interface User {
-  [x: string]: any;
   id?: number;
   name: string;
   surname?: string;
@@ -23,4 +22,5 @@ export interface User {
   education: Education[];
   languages: Language[];
   loggedIn: boolean;
+  favoriteActivities?: number[];
 }

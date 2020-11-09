@@ -8,6 +8,8 @@ import { ActivitiesService } from '@services/activities.service';
 import { UserService } from '@services/user.service';
 import { Observable } from 'rxjs';
 import * as UserSelectors from '@store/user/user.selector';
+import * as ActivitySelectors from '@store/activity/activity.selector';
+import * as ActivityActions from '@store/activity/activity.action';
 import { ActivitiesFavoritesService } from '../../services/activities-favorites.service';
 
 @Component({
@@ -21,38 +23,51 @@ export class ActivitiesListComponent implements OnInit {
   public activities: Activity[];
   public user: User;
   public userLoggedIn$: Observable<User> = this.store$.select(UserSelectors.selectUser);
+  public activities$: Observable<Activity[]> = this.store$.select(ActivitySelectors.selectActivities);
 
   constructor(/*private us: UserService, */private as: ActivitiesService, private router: Router, private af: ActivitiesFavoritesService, private store$: Store<AppStore>) { }
 
   ngOnInit(): void {
     // this.user = this.us.userLoggedIn;
     this.userLoggedIn$.subscribe(userLoggedIn => this.user = userLoggedIn);
-    this.populateActivities();
-
-  }
-
-  populateActivities() {
-    if (!this.user) {
-      this.as.getActivities().subscribe(
-        (act) => this.activities = act
-      );
-    }
-    else {
+    this.activities$.subscribe(activities => {
       if (this.router.url === '/favorites') {
-        this.activities = this.as.activities.filter(ac => this.af.isFavorite(ac));
+        this.activities = activities.filter(ac => this.af.isFavorite(this.user, ac));
       }
       else if (this.router.url === '/myactivities') {
-        this.activities = this.as.activities.filter(ac => ac.participatingUsers.find(id => this.user.id === id));
+        this.activities = activities.filter(ac => ac.participatingUsers.find(id => this.user.id === id));
       }
       else {
         this.activities = this.as.activities;
       }
-    }
+    });
+    // this.populateActivities();
+
   }
 
+  // populateActivities() {
+  //   if (!this.user) {
+  //     this.as.getActivities().subscribe(
+  //       (act) => this.activities = act
+  //     );
+  //   }
+  //   else {
+  //     if (this.router.url === '/favorites') {
+  //       this.activities = this.as.activities.filter(ac => this.af.isFavorite(ac));
+  //     }
+  //     else if (this.router.url === '/myactivities') {
+  //       this.activities = this.as.activities.filter(ac => ac.participatingUsers.find(id => this.user.id === id));
+  //     }
+  //     else {
+  //       this.activities = this.as.activities;
+  //     }
+  //   }
+  // }
+
   showDetails(ac: Activity) {
-    this.as.activityToShow = ac;
-    this.as.activityToShowRefreshed().next();
+    this.store$.dispatch(ActivityActions.ActivitySelect({ activityId: ac.id }));
+    // this.as.activityToShow = ac;
+    // this.as.activityToShowRefreshed().next();
   }
 
 }

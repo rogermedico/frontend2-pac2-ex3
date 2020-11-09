@@ -8,11 +8,12 @@ import { User } from '@models/user.model';
 import { Login } from '@models/login.model';
 import { Language } from '@models/language.model';
 import { Education } from '@models/education.model';
+import { ActivitiesFavoritesService } from '@modules/activities/services/activities-favorites.service';
 
 @Injectable()
 export class UserEffects {
 
-  constructor(private actions$: Actions, private us: UserService) { }
+  constructor(private actions$: Actions, private us: UserService, private favService: ActivitiesFavoritesService) { }
 
   /* login */
   login$ = createEffect(() => this.actions$.pipe(
@@ -150,6 +151,19 @@ export class UserEffects {
           return { type: UserActions.UserActionTypes.USER_DELETE_EDUCATION_SUCCESS, user: updatedUser }
         }),
         catchError(err => of({ type: UserActions.UserActionTypes.USER_DELETE_EDUCATION_ERROR, err: err }))
+      )
+    })
+  ));
+
+  /* toggle favorite activity */
+  toggleFavoriteActivity$ = createEffect(() => this.actions$.pipe(
+    ofType(UserActions.UserActionTypes.USER_TOGGLE_FAVORITE_ACTIVITY),
+    mergeMap((action: { type: string, user: User, activityId: number }) => {
+      return this.favService.toggleFavorite(action.user, action.activityId).pipe(
+        map(() => {
+          return { type: UserActions.UserActionTypes.USER_TOGGLE_FAVORITE_ACTIVITY_SUCCESS }
+        }),
+        catchError(err => of({ type: UserActions.UserActionTypes.USER_TOGGLE_FAVORITE_ACTIVITY_ERROR, err: err }))
       )
     })
   ));

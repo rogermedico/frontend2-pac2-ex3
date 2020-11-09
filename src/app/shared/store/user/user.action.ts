@@ -44,6 +44,10 @@ export enum UserActionTypes {
   USER_DELETE_EDUCATION = '[User/Education] USER_DELETE_EDUCATION',
   USER_DELETE_EDUCATION_SUCCESS = '[User/Education] USER_DELETE_EDUCATION_SUCCESS',
   USER_DELETE_EDUCATION_ERROR = '[User/Education] USER_DELETE_EDUCATION_ERROR',
+
+  USER_TOGGLE_FAVORITE_ACTIVITY = '[User/Favorite] USER_TOGGLE_FAVORITE_ACTIVITY',
+  USER_TOGGLE_FAVORITE_ACTIVITY_SUCCESS = '[User/Favorite] USER_TOGGLE_FAVORITE_ACTIVITYE_SUCCESS',
+  USER_TOGGLE_FAVORITE_ACTIVITY_ERROR = '[User/Favorite] USER_TOGGLE_FAVORITE_ACTIVITY_ERROR',
 }
 
 /* auth login */
@@ -95,3 +99,8 @@ export const UserUpdateEducationError = createAction(UserActionTypes.USER_UPDATE
 export const UserDeleteEducation = createAction(UserActionTypes.USER_DELETE_EDUCATION, props<{ user: User, education: Education }>());
 export const UserDeleteEducationSuccess = createAction(UserActionTypes.USER_DELETE_EDUCATION_SUCCESS, props<{ user: User }>());
 export const UserDeleteEducationError = createAction(UserActionTypes.USER_DELETE_EDUCATION_ERROR, props<{ err: String }>());
+
+/* toggle favorite activity */
+export const UserToggleFavoriteActivity = createAction(UserActionTypes.USER_TOGGLE_FAVORITE_ACTIVITY, props<{ user: User, activityId: number }>());
+export const UserToggleFavoriteActivitySuccess = createAction(UserActionTypes.USER_TOGGLE_FAVORITE_ACTIVITY_SUCCESS);
+export const UserToggleFavoriteActivityError = createAction(UserActionTypes.USER_TOGGLE_FAVORITE_ACTIVITY_ERROR, props<{ err: String }>());
