@@ -1,2 +1,16 @@
-export const LANGUAGES = ['Català', 'Castellà', 'Anglès', 'Francès', 'Alemany'];
-export const LANGUAGE_LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+export enum LANGUAGES {
+  ca = 'Català',
+  es = 'Castellà',
+  en = 'Anglès',
+  fr = 'Francès',
+  al = 'Alemany'
+}
+
+export enum LANGUAGE_LEVELS {
+  a1 = 'A1',
+  a2 = 'A2',
+  b1 = 'B1',
+  b2 = 'B2',
+  c1 = 'C1',
+  c2 = 'C2'
+}

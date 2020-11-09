@@ -1,3 +1,25 @@
-export const SUBCATEGORY_TYPES_CULTURE = ['Concert', 'Espectacle', 'Excursió', 'Festivals', 'Visita guiada', 'Museu', 'Monument'];
-export const SUBCATEGORY_TYPES_ENOTURISME = ['Bodega', 'Tast de productes', 'Excursió', 'Museu del ví', 'Visita guiada'];
-export const SUBCATEGORY_TYPES_BEACH = ['Nàutica', 'Cala', 'Concert', 'Excursió', 'Taller'];
+export enum SUBCATEGORY_TYPES_CULTURE {
+  concert = 'Concert',
+  espectacle = 'Espectacle',
+  excursio = 'Excursió',
+  festivals = 'Festivals',
+  visita = 'Visita guiada',
+  museu = 'Museu',
+  monument = 'Monument'
+}
+
+export enum SUBCATEGORY_TYPES_ENOTURISME {
+  bodega = 'Bodega',
+  tast = 'Tast de productes',
+  excursio = 'Excursió',
+  museu = 'Museu del ví',
+  visita = 'Visita guiada'
+}
+
+export enum SUBCATEGORY_TYPES_BEACH {
+  nautica = 'Nàutica',
+  cala = 'Cala',
+  concert = 'Concert',
+  excursio = 'Excursió',
+  taller = 'Taller'
+}

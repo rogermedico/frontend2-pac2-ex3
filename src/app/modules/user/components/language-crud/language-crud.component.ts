@@ -24,15 +24,15 @@ export class LanguageCrudComponent implements OnInit {
   public languages$: Observable<Language[]> = this.store$.select(UserSelectors.selectLanguages);
   public userLoggedIn$: Observable<User> = this.store$.select(UserSelectors.selectUser);
   public language: Language = {
-    name: '',
-    level: '',
+    name: null,
+    level: null,
     finishDate: ''
   };
   public languageIndex: number;
   public languageForm: FormGroup;
   public buttonTag: string;
-  public languageNames: string[] = LANGUAGES;
-  public languageLevels: string[] = LANGUAGE_LEVELS;
+  public languageNames = Object.values(LANGUAGES);
+  public languageLevels = Object.values(LANGUAGE_LEVELS);
 
   constructor(private fb: FormBuilder, private us: UserService, private activatedRoute: ActivatedRoute, private router: Router, private store$: Store<AppStore>) { }
 

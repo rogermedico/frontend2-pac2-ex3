@@ -93,8 +93,8 @@
       <div class="input-container">
         <select class="input" formControlName="state">
           <option value="" [selected]="activity?.state == null">Select status</option>
-          <option value="Available" [selected]="activity?.state == 'Available'">Available</option>
-          <option value="Cancelled" [selected]="activity?.state == 'Cancelled'">Cancelled</option>
+          <option value="Available" [selected]="activity?.state == activityStatus.available">Available</option>
+          <option value="Cancelled" [selected]="activity?.state == activityStatus.cancelled">Cancelled</option>
         </select>
         <div class="error" *ngIf="state.invalid && state.dirty">
           Status is mandatory

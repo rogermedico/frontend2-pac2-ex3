@@ -1,4 +1,4 @@
-export const API = {
-  users: 'api/users',
-  activities: 'api/activities'
+export enum API {
+  users = 'api/users',
+  activities = 'api/activities'
 };

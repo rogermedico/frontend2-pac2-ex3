@@ -13,6 +13,7 @@ import { UserService } from '@services/user.service';
 import { maxCapacityValidator } from '@validators/max-capacity.validator';
 import { Observable } from 'rxjs';
 import * as UserSelectors from '@store/user/user.selector';
+import { ACTIVITY_STATUS } from '@constants/activity-status.constant';
 
 @Component({
   selector: 'app-admin-activities-crud',
@@ -40,11 +41,12 @@ export class AdminActivitiesCrudComponent implements OnInit {
   public activityIndex: number;
   public activityForm: FormGroup;
   public buttonTag: string;
-  public categoryTypes: string[] = CATEGORY_TYPES;
-  public subcategoryCulture: string[] = SUBCATEGORY_TYPES_CULTURE;
-  public subcategoryEnoturisme: string[] = SUBCATEGORY_TYPES_ENOTURISME;
-  public subcategoryBeach: string[] = SUBCATEGORY_TYPES_BEACH;
-  public languages: string[] = LANGUAGES;
+  public categoryTypes = Object.values(CATEGORY_TYPES);
+  public subcategoryCulture = Object.values(SUBCATEGORY_TYPES_CULTURE);
+  public subcategoryEnoturisme = Object.values(SUBCATEGORY_TYPES_ENOTURISME);
+  public subcategoryBeach = Object.values(SUBCATEGORY_TYPES_BEACH);
+  public languages = Object.values(LANGUAGES);
+  public activityStatus = ACTIVITY_STATUS;
 
   constructor(private fb: FormBuilder, /*private us: UserService,*/ private as: ActivitiesService, private activatedRoute: ActivatedRoute, private router: Router, private store$: Store<AppStore>) { }
 

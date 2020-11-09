@@ -1,1 +1,5 @@
-export const CATEGORY_TYPES = ['Cultura i patrimoni', 'Enoturisme', 'Platges'];
+export enum CATEGORY_TYPES {
+  cultura = 'Cultura i patrimoni',
+  enoturisme = 'Enoturisme',
+  platges = 'Platges'
+}

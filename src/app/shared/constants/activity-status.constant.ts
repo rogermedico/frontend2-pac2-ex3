@@ -1,1 +1,5 @@
-export const ACTIVITY_STATUS = ['Cancelled', 'Complete', 'Available'];
+export enum ACTIVITY_STATUS {
+  cancelled = 'Cancelled',
+  complete = 'Complete',
+  available = 'Available'
+}

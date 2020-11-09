@@ -1,3 +1,17 @@
-export const EDUCATION_TYPE = ['Títol universitari', 'Cicle formatiu'];
-export const EDUCATION_TYPE_UNIVERSITY = ['Grau', 'Diplomat', 'Llicenciat', 'Enginyer', 'Màster', 'Doctorat'];
-export const EDUCATION_TYPE_CICLE = ['Grau superior', 'Grau Mitjà'];
+export enum EDUCATION_TYPE {
+  uni = 'Títol universitari',
+  fp = 'Cicle formatiu'
+}
+
+export enum EDUCATION_TYPE_UNIVERSITY {
+  grau = 'Grau',
+  diplomat = 'Diplomat',
+  llicenciat = 'Llicenciat',
+  eng = 'Enginyer',
+  master = 'Màster',
+  dr = 'Doctorat'
+}
+export enum EDUCATION_TYPE_CICLE {
+  gs = 'Grau superior',
+  gm = 'Grau Mitjà'
+}

@@ -24,17 +24,17 @@ export class EducationCrudComponent implements OnInit {
   public educations$: Observable<Education[]> = this.store$.select(UserSelectors.selectEducation);
   public userLoggedIn$: Observable<User> = this.store$.select(UserSelectors.selectUser);
   public education: Education = {
-    type: '',
-    level: '',
+    type: null,
+    level: null,
     name: '',
     university: ''
   };
   public educationIndex: number;
   public educationForm: FormGroup;
   public buttonTag: string;
-  public educationTypes: string[] = EDUCATION_TYPE;
-  public universityLevels: string[] = EDUCATION_TYPE_UNIVERSITY;
-  public cicleLevels: string[] = EDUCATION_TYPE_CICLE;
+  public educationTypes = Object.values(EDUCATION_TYPE);
+  public universityLevels = Object.values(EDUCATION_TYPE_UNIVERSITY);
+  public cicleLevels = Object.values(EDUCATION_TYPE_CICLE);
 
   constructor(private fb: FormBuilder, private us: UserService, private activatedRoute: ActivatedRoute, private router: Router, private store$: Store<AppStore>) { }
 

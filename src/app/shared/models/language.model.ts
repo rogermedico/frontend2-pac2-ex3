@@ -1,7 +1,7 @@
 import { LANGUAGES, LANGUAGE_LEVELS } from '@constants/language.constant';
 
 export interface Language {
-  name: typeof LANGUAGES[number];
-  level: typeof LANGUAGE_LEVELS[number];
+  name: LANGUAGES;
+  level: LANGUAGE_LEVELS;
   finishDate?: string;
 }

@@ -6,15 +6,15 @@ import { ACTIVITY_STATUS } from '@constants/activity-status.constant';
 export interface Activity {
   id?: number;
   name: string;
-  category: typeof CATEGORY_TYPES[number];
-  subcategory: typeof SUBCATEGORY_TYPES_CULTURE[number] | typeof SUBCATEGORY_TYPES_ENOTURISME[number] | typeof SUBCATEGORY_TYPES_BEACH[number];
+  category: CATEGORY_TYPES;
+  subcategory: SUBCATEGORY_TYPES_CULTURE | SUBCATEGORY_TYPES_ENOTURISME | SUBCATEGORY_TYPES_BEACH;
   description?: string;
-  language: typeof LANGUAGES[number];
+  language: LANGUAGES;
   date?: string;
   price: number;
   miniumCapacity: number;
   maxCapacity: number;
-  state: typeof ACTIVITY_STATUS[number];
+  state: ACTIVITY_STATUS;
   owner: number;
   participatingUsers: number[];
 }
