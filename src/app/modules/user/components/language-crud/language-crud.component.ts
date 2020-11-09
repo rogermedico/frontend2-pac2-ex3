@@ -10,7 +10,6 @@ import { UserService } from '@services/user.service';
 import { Observable } from 'rxjs';
 import * as UserSelectors from '@store/user/user.selector';
 import * as UserActions from '@store/user/user.action';
-import { preserveWhitespacesDefault } from '@angular/compiler';
 import { take } from 'rxjs/operators';
 
 @Component({
@@ -71,7 +70,7 @@ export class LanguageCrudComponent implements OnInit {
     // this.createForm();
   }
 
-  createForm(lang: Language = null) {
+  createForm(lang: Language) {
     this.languageForm = this.fb.group({
       name: [lang.name ? lang.name : null, [Validators.required]],
       level: [lang.level ? lang.level : null, [Validators.required]],

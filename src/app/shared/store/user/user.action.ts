@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { User } from '@models/user.model';
 import { Login } from '@models/login.model';
 import { Language } from '@models/language.model';
+import { Education } from '@models/education.model';
 
 export enum UserActionTypes {
   USER_LOGIN = '[User/Auth] USER_LOGIN',
@@ -31,6 +32,18 @@ export enum UserActionTypes {
   USER_DELETE_LANGUAGE = '[User/Language] USER_DELETE_LANGUAGE',
   USER_DELETE_LANGUAGE_SUCCESS = '[User/Language] USER_DELETE_LANGUAGE_SUCCESS',
   USER_DELETE_LANGUAGE_ERROR = '[User/Language] USER_DELETE_LANGUAGE_ERROR',
+
+  USER_CREATE_EDUCATION = '[User/Education] USER_CREATE_EDUCATION',
+  USER_CREATE_EDUCATION_SUCCESS = '[User/Education] USER_CREATE_EDUCATION_SUCCESS',
+  USER_CREATE_EDUCATION_ERROR = '[User/Education] USER_CREATE_EDUCATION_ERROR',
+
+  USER_UPDATE_EDUCATION = '[User/Education] USER_UPDATE_EDUCATION',
+  USER_UPDATE_EDUCATION_SUCCESS = '[User/Education] USER_UPDATE_EDUCATION_SUCCESS',
+  USER_UPDATE_EDUCATION_ERROR = '[User/Education] USER_UPDATE_EDUCATION_ERROR',
+
+  USER_DELETE_EDUCATION = '[User/Education] USER_DELETE_EDUCATION',
+  USER_DELETE_EDUCATION_SUCCESS = '[User/Education] USER_DELETE_EDUCATION_SUCCESS',
+  USER_DELETE_EDUCATION_ERROR = '[User/Education] USER_DELETE_EDUCATION_ERROR',
 }
 
 /* auth login */
@@ -67,3 +80,18 @@ export const UserUpdateLanguageError = createAction(UserActionTypes.USER_UPDATE_
 export const UserDeleteLanguage = createAction(UserActionTypes.USER_DELETE_LANGUAGE, props<{ user: User, language: Language }>());
 export const UserDeleteLanguageSuccess = createAction(UserActionTypes.USER_DELETE_LANGUAGE_SUCCESS, props<{ user: User }>());
 export const UserDeleteLanguageError = createAction(UserActionTypes.USER_DELETE_LANGUAGE_ERROR, props<{ err: String }>());
+
+/* create education */
+export const UserCreateEducation = createAction(UserActionTypes.USER_CREATE_EDUCATION, props<{ user: User, education: Education }>());
+export const UserCreateEducationSuccess = createAction(UserActionTypes.USER_CREATE_EDUCATION_SUCCESS, props<{ user: User }>());
+export const UserCreateEducationError = createAction(UserActionTypes.USER_CREATE_EDUCATION_ERROR, props<{ err: String }>());
+
+/* update education */
+export const UserUpdateEducation = createAction(UserActionTypes.USER_UPDATE_EDUCATION, props<{ user: User, oldEducation: Education, newEducation: Education }>());
+export const UserUpdateEducationSuccess = createAction(UserActionTypes.USER_UPDATE_EDUCATION_SUCCESS, props<{ user: User }>());
+export const UserUpdateEducationError = createAction(UserActionTypes.USER_UPDATE_EDUCATION_ERROR, props<{ err: String }>());
+
+/* delete education */
+export const UserDeleteEducation = createAction(UserActionTypes.USER_DELETE_EDUCATION, props<{ user: User, education: Education }>());
+export const UserDeleteEducationSuccess = createAction(UserActionTypes.USER_DELETE_EDUCATION_SUCCESS, props<{ user: User }>());
+export const UserDeleteEducationError = createAction(UserActionTypes.USER_DELETE_EDUCATION_ERROR, props<{ err: String }>());

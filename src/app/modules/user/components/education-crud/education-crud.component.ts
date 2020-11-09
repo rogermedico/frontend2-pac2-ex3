@@ -5,6 +5,12 @@ import { EDUCATION_TYPE, EDUCATION_TYPE_CICLE, EDUCATION_TYPE_UNIVERSITY } from 
 import { Education } from '@models/education.model';
 import { User } from '@models/user.model';
 import { UserService } from '@services/user.service';
+import { Observable } from 'rxjs';
+import * as UserSelectors from '@store/user/user.selector';
+import * as UserActions from '@store/user/user.action';
+import { take } from 'rxjs/operators';
+import { AppStore } from '@models/store.model';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-education-crud',
@@ -14,7 +20,9 @@ import { UserService } from '@services/user.service';
 export class EducationCrudComponent implements OnInit {
 
   public title: String;
-  public user: User;
+  // public user: User;
+  public educations$: Observable<Education[]> = this.store$.select(UserSelectors.selectEducation);
+  public userLoggedIn$: Observable<User> = this.store$.select(UserSelectors.selectUser);
   public education: Education = {
     type: '',
     level: '',
@@ -28,31 +36,33 @@ export class EducationCrudComponent implements OnInit {
   public universityLevels: string[] = EDUCATION_TYPE_UNIVERSITY;
   public cicleLevels: string[] = EDUCATION_TYPE_CICLE;
 
-  constructor(private fb: FormBuilder, private us: UserService, private activatedRoute: ActivatedRoute, private router: Router) { }
+  constructor(private fb: FormBuilder, private us: UserService, private activatedRoute: ActivatedRoute, private router: Router, private store$: Store<AppStore>) { }
 
   ngOnInit(): void {
     this.educationIndex = parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
     this.educationIndex = Number.isNaN(this.educationIndex) ? null : this.educationIndex;
-    this.user = this.us.userLoggedIn;
-    if ((this.educationIndex != null) && (this.educationIndex >= 0) && (this.educationIndex < this.user.education.length)) {
-      this.title = 'Edit education';
-      this.buttonTag = 'Update education';
-      this.education = this.user.education[this.educationIndex];
-    }
-    else {
-      this.title = 'Create new education';
-      this.buttonTag = 'Create education';
-    }
-    this.createForm();
+
+    this.userLoggedIn$.subscribe(u => {
+      if ((this.educationIndex != null) && (this.educationIndex >= 0) && (this.educationIndex < u.education.length)) {
+        this.title = 'Edit education';
+        this.buttonTag = 'Update education';
+        this.education = u.education[this.educationIndex];
+      }
+      else {
+        this.title = 'Create new education';
+        this.buttonTag = 'Create education';
+      }
+      this.createForm(this.education);
+    })
   }
 
-  createForm() {
+  createForm(e: Education) {
     this.educationForm = this.fb.group({
-      type: [this.education.type ? this.education.type : null, [Validators.required]],
-      level: [{ value: (this.education.level ? this.education.level : null), disabled: !this.education.level }, [Validators.required]],
-      name: [this.education.name ? this.education.name : null, [Validators.required, Validators.minLength(3), Validators.maxLength(55)]],
-      university: [this.education.university ? this.education.university : null, [Validators.required, Validators.minLength(3), Validators.maxLength(55)]],
-      finishDate: [this.education.finishDate ? this.education.finishDate : null, [Validators.pattern('^(0[1-9]|[12][0-9]|3[01])[/](0[1-9]|1[012])[/]\\d{4}$')]]
+      type: [e.type ? e.type : null, [Validators.required]],
+      level: [{ value: (e.level ? e.level : null), disabled: !e.level }, [Validators.required]],
+      name: [e.name ? e.name : null, [Validators.required, Validators.minLength(3), Validators.maxLength(55)]],
+      university: [e.university ? e.university : null, [Validators.required, Validators.minLength(3), Validators.maxLength(55)]],
+      finishDate: [e.finishDate ? e.finishDate : null, [Validators.pattern('^(0[1-9]|[12][0-9]|3[01])[/](0[1-9]|1[012])[/]\\d{4}$')]]
     }
     );
 
@@ -73,7 +83,7 @@ export class EducationCrudComponent implements OnInit {
   }
 
   handleEducationForm() {
-    const e: Education = {
+    const edu: Education = {
       type: this.type.value,
       level: this.level.value,
       name: this.name.value,
@@ -81,20 +91,33 @@ export class EducationCrudComponent implements OnInit {
       finishDate: this.finishDate.value
     }
 
-    if (this.educationIndex != null) {
-      this.user.education[this.educationIndex] = e;
-    }
-    else {
-      this.user.education.push(e);
-    }
-
-    this.us.updateUser(this.user).subscribe(
-      () => {
-        if (this.educationIndex) console.log(`Education from user ${this.user.email} updated: `, this.user);
-        else console.log(`Created new education from user ${this.user.email}: `, this.user);
-        this.router.navigate(['/user/profile']);
+    this.userLoggedIn$.pipe(
+      take(1)
+    ).subscribe(u => {
+      if (this.educationIndex != null) {
+        this.store$.dispatch(UserActions.UserUpdateEducation({ user: u, oldEducation: this.education, newEducation: edu }));
       }
-    );
+      else {
+        this.store$.dispatch(UserActions.UserCreateEducation({ user: u, education: edu }));
+      }
+    });
+    this.router.navigate(['/user/profile']);
+
+
+    // if (this.educationIndex != null) {
+    //   this.user.education[this.educationIndex] = e;
+    // }
+    // else {
+    //   this.user.education.push(e);
+    // }
+
+    // this.us.updateUser(this.user).subscribe(
+    //   () => {
+    //     if (this.educationIndex) console.log(`Education from user ${this.user.email} updated: `, this.user);
+    //     else console.log(`Created new education from user ${this.user.email}: `, this.user);
+    //     this.router.navigate(['/user/profile']);
+    //   }
+    // );
 
   }
 

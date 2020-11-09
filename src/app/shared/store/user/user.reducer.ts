@@ -198,6 +198,87 @@ const _userReducer = createReducer(defaultUserState,
       ...state,
       loading: false
     }
+  }),
+
+  /* create education */
+  on(UserActions.UserCreateEducation, state => {
+    return {
+      ...state,
+      loading: true
+    }
+  }),
+
+  /* create education success */
+  on(UserActions.UserCreateEducationSuccess, (state, { user }) => {
+    return {
+      ...state,
+      user: user,
+      loading: false
+    }
+  }),
+
+  /* create education error */
+  on(UserActions.UserCreateEducationError, (state, { err }) => {
+    /* passar l'error a un servei de missatges ? */
+    console.log('ERROR: ', err)
+    return {
+      ...state,
+      loading: false
+    }
+  }),
+
+  /* update education */
+  on(UserActions.UserUpdateEducation, state => {
+    return {
+      ...state,
+      loading: true
+    }
+  }),
+
+  /* update education success */
+  on(UserActions.UserUpdateEducationSuccess, (state, { user }) => {
+    return {
+      ...state,
+      user: user,
+      loading: false
+    }
+  }),
+
+  /* update education error */
+  on(UserActions.UserUpdateEducationError, (state, { err }) => {
+    /* passar l'error a un servei de missatges ? */
+    console.log('ERROR: ', err)
+    return {
+      ...state,
+      loading: false
+    }
+  }),
+
+  /* delete education */
+  on(UserActions.UserDeleteEducation, state => {
+    return {
+      ...state,
+      loading: true
+    }
+  }),
+
+  /* delete education success */
+  on(UserActions.UserDeleteEducationSuccess, (state, { user }) => {
+    return {
+      ...state,
+      user: user,
+      loading: false
+    }
+  }),
+
+  /* delete education error */
+  on(UserActions.UserDeleteEducationError, (state, { err }) => {
+    /* passar l'error a un servei de missatges ? */
+    console.log('ERROR: ', err)
+    return {
+      ...state,
+      loading: false
+    }
   })
 
 );

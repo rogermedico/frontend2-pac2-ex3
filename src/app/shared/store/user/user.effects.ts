@@ -7,6 +7,7 @@ import { UserService } from '@services/user.service';
 import { User } from '@models/user.model';
 import { Login } from '@models/login.model';
 import { Language } from '@models/language.model';
+import { Education } from '@models/education.model';
 
 @Injectable()
 export class UserEffects {
@@ -101,6 +102,54 @@ export class UserEffects {
           return { type: UserActions.UserActionTypes.USER_DELETE_LANGUAGE_SUCCESS, user: updatedUser }
         }),
         catchError(err => of({ type: UserActions.UserActionTypes.USER_DELETE_LANGUAGE_ERROR, err: err }))
+      )
+    })
+  ));
+
+  /* create education */
+  createEducation$ = createEffect(() => this.actions$.pipe(
+    ofType(UserActions.UserActionTypes.USER_CREATE_EDUCATION),
+    mergeMap((action: { type: string, user: User, education: Education }) => {
+      const updatedUser = { ...action.user, education: [...action.user.education, action.education] };
+      return this.us.updateUser(updatedUser).pipe(
+        map(() => {
+          return { type: UserActions.UserActionTypes.USER_CREATE_EDUCATION_SUCCESS, user: updatedUser }
+        }),
+        catchError(err => of({ type: UserActions.UserActionTypes.USER_CREATE_EDUCATION_ERROR, err: err }))
+      )
+    })
+  ));
+
+  /* update education */
+  updateEducation$ = createEffect(() => this.actions$.pipe(
+    ofType(UserActions.UserActionTypes.USER_UPDATE_EDUCATION),
+    mergeMap((action: { type: string, user: User, oldEducation: Education, newEducation: Education }) => {
+      const updatedUser = {
+        ...action.user,
+        education: action.user.education.map(e => {
+          if (e === action.oldEducation) return action.newEducation;
+          else return e;
+        })
+      };
+      return this.us.updateUser(updatedUser).pipe(
+        map(() => {
+          return { type: UserActions.UserActionTypes.USER_UPDATE_EDUCATION_SUCCESS, user: updatedUser }
+        }),
+        catchError(err => of({ type: UserActions.UserActionTypes.USER_UPDATE_EDUCATION_ERROR, err: err }))
+      )
+    })
+  ));
+
+  /* delete education */
+  deleteEducation$ = createEffect(() => this.actions$.pipe(
+    ofType(UserActions.UserActionTypes.USER_DELETE_EDUCATION),
+    mergeMap((action: { type: string, user: User, education: Education }) => {
+      const updatedUser = { ...action.user, education: action.user.education.filter(e => e !== action.education) };
+      return this.us.updateUser(updatedUser).pipe(
+        map(() => {
+          return { type: UserActions.UserActionTypes.USER_DELETE_EDUCATION_SUCCESS, user: updatedUser }
+        }),
+        catchError(err => of({ type: UserActions.UserActionTypes.USER_DELETE_EDUCATION_ERROR, err: err }))
       )
     })
   ));

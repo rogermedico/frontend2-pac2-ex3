@@ -1,7 +1,7 @@
 <div>
   <h2 class="section-title">{{title}}</h2>
   <div class="form-group">
-    <form *ngIf="user" [formGroup]="educationForm" (ngSubmit)="handleEducationForm()">
+    <form [formGroup]="educationForm" (ngSubmit)="handleEducationForm()">
       <div class="input-container">
         <select class="type-input" formControlName="type">
           <option value="" [selected]="education?.type == null">Select education type</option>

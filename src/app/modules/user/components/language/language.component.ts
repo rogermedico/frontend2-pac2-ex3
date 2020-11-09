@@ -19,7 +19,7 @@ import { take } from 'rxjs/operators';
 export class LanguageComponent implements OnInit {
 
   public title: string = 'Languages';
-  public user: User;
+  // public user: User;
   public languages$: Observable<Language[]> = this.store$.select(UserSelectors.selectLanguages);
   public userLoggedIn$: Observable<User> = this.store$.select(UserSelectors.selectUser);
   public educationForm: FormGroup;
