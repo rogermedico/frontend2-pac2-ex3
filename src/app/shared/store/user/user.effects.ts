@@ -8,7 +8,8 @@ import { User } from '@models/user.model';
 import { Login } from '@models/login.model';
 import { Language } from '@models/language.model';
 import { Education } from '@models/education.model';
-import { ActivitiesFavoritesService } from '@modules/activities/services/activities-favorites.service';
+import { ActivitiesFavoritesService } from '@services/activities-favorites.service';
+import { USER_TYPES } from '@constants/user-types.constant';
 
 @Injectable()
 export class UserEffects {
@@ -19,8 +20,16 @@ export class UserEffects {
   login$ = createEffect(() => this.actions$.pipe(
     ofType(UserActions.UserActionTypes.USER_LOGIN),
     mergeMap((action: { type: string, loginInfo: Login }) => this.us.login(action.loginInfo).pipe(
-      map(user => {
-        return { type: UserActions.UserActionTypes.USER_LOGIN_SUCCESS, user: user }
+      mergeMap(user => {
+        if (user.type == USER_TYPES.tourist) {
+          return [
+            { type: UserActions.UserActionTypes.USER_LOGIN_SUCCESS, user: user },
+            { type: UserActions.UserActionTypes.USER_LOAD_FAVORITE_ACTIVITIES, user: user }
+          ]
+        }
+        else {
+          return [{ type: UserActions.UserActionTypes.USER_LOGIN_SUCCESS, user: user }];
+        }
       }),
       catchError(err => of({ type: UserActions.UserActionTypes.USER_LOGIN_ERROR, err: err }))
     ))
@@ -155,13 +164,26 @@ export class UserEffects {
     })
   ));
 
+  /* load favorite activities */
+  loadFavoriteActivities$ = createEffect(() => this.actions$.pipe(
+    ofType(UserActions.UserActionTypes.USER_LOAD_FAVORITE_ACTIVITIES),
+    mergeMap((action: { type: string, user: User }) => {
+      return this.favService.loadFavorites(action.user).pipe(
+        map(favoriteActivities => {
+          return { type: UserActions.UserActionTypes.USER_LOAD_FAVORITE_ACTIVITIES_SUCCESS, favoriteActivities: favoriteActivities }
+        }),
+        catchError(err => of({ type: UserActions.UserActionTypes.USER_LOAD_FAVORITE_ACTIVITIES_ERROR, err: err }))
+      )
+    })
+  ));
+
   /* toggle favorite activity */
   toggleFavoriteActivity$ = createEffect(() => this.actions$.pipe(
     ofType(UserActions.UserActionTypes.USER_TOGGLE_FAVORITE_ACTIVITY),
     mergeMap((action: { type: string, user: User, activityId: number }) => {
       return this.favService.toggleFavorite(action.user, action.activityId).pipe(
-        map(() => {
-          return { type: UserActions.UserActionTypes.USER_TOGGLE_FAVORITE_ACTIVITY_SUCCESS }
+        map(favoriteActivities => {
+          return { type: UserActions.UserActionTypes.USER_TOGGLE_FAVORITE_ACTIVITY_SUCCESS, favoriteActivities: favoriteActivities }
         }),
         catchError(err => of({ type: UserActions.UserActionTypes.USER_TOGGLE_FAVORITE_ACTIVITY_ERROR, err: err }))
       )

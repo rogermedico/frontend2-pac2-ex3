@@ -281,8 +281,38 @@ const _userReducer = createReducer(defaultUserState,
     }
   }),
 
+  /* load favorite activities */
+  on(UserActions.UserLoadFavoriteActivities, state => {
+    return {
+      ...state,
+      loading: true
+    }
+  }),
+
+  /* load favorite activities success */
+  on(UserActions.UserLoadFavoriteActivitiesSuccess, (state, { favoriteActivities }) => {
+    return {
+      ...state,
+      user: {
+        ...state.user,
+        favoriteActivities: favoriteActivities
+      },
+      loading: false
+    }
+  }),
+
+  /* load favorite activities error */
+  on(UserActions.UserLoadFavoriteActivitiesError, (state, { err }) => {
+    /* passar l'error a un servei de missatges ? */
+    console.log('ERROR: ', err)
+    return {
+      ...state,
+      loading: false
+    }
+  }),
+
   /* toggle favorite activity */
-  on(UserActions.UserDeleteEducation, state => {
+  on(UserActions.UserToggleFavoriteActivity, state => {
     return {
       ...state,
       loading: true
@@ -290,15 +320,19 @@ const _userReducer = createReducer(defaultUserState,
   }),
 
   /* toggle favorite activity success */
-  on(UserActions.UserDeleteEducationSuccess, (state, { user }) => {
+  on(UserActions.UserToggleFavoriteActivitySuccess, (state, { favoriteActivities }) => {
     return {
       ...state,
+      user: {
+        ...state.user,
+        favoriteActivities: favoriteActivities
+      },
       loading: false
     }
   }),
 
   /* toggle favorite activity error */
-  on(UserActions.UserDeleteEducationError, (state, { err }) => {
+  on(UserActions.UserToggleFavoriteActivityError, (state, { err }) => {
     /* passar l'error a un servei de missatges ? */
     console.log('ERROR: ', err)
     return {

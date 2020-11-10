@@ -13,7 +13,10 @@ import { UserService } from '@services/user.service';
 import { maxCapacityValidator } from '@validators/max-capacity.validator';
 import { Observable } from 'rxjs';
 import * as UserSelectors from '@store/user/user.selector';
+import * as ActivitySelectors from '@store/activity/activity.selector';
+import * as ActivityActions from '@store/activity/activity.action';
 import { ACTIVITY_STATUS } from '@constants/activity-status.constant';
+import { map, skipWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'app-admin-activities-crud',
@@ -26,6 +29,7 @@ export class AdminActivitiesCrudComponent implements OnInit {
   public title: String;
   public user: User;
   public userLoggedIn$: Observable<User> = this.store$.select(UserSelectors.selectUser);
+  public activities$: Observable<Activity[]> = this.store$.select(ActivitySelectors.selectActivities);
   public activity: Activity = {
     name: null,
     category: null,
@@ -46,7 +50,8 @@ export class AdminActivitiesCrudComponent implements OnInit {
   public subcategoryEnoturisme = Object.values(SUBCATEGORY_TYPES_ENOTURISME);
   public subcategoryBeach = Object.values(SUBCATEGORY_TYPES_BEACH);
   public languages = Object.values(LANGUAGES);
-  public activityStatus = ACTIVITY_STATUS;
+  public activityStatus = Object.values(ACTIVITY_STATUS);
+  public ACTIVITY_STATUS = ACTIVITY_STATUS;
 
   constructor(private fb: FormBuilder, /*private us: UserService,*/ private as: ActivitiesService, private activatedRoute: ActivatedRoute, private router: Router, private store$: Store<AppStore>) { }
 
@@ -56,20 +61,36 @@ export class AdminActivitiesCrudComponent implements OnInit {
     this.activityIndex = parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
     this.activityIndex = Number.isNaN(this.activityIndex) ? null : this.activityIndex;
 
-    if (this.activityIndex != null) {
-      this.activity = this.as.activities.find((ac) => ac.id === this.activityIndex);
-      this.title = 'Edit activity';
-      this.buttonTag = 'Update activity';
-    }
-    else {
-      this.title = 'Create new activity';
-      this.buttonTag = 'Create activity';
-    }
+    this.activities$.pipe(
+      map(activities => {
+        if (this.user && this.activityIndex != null) {
+          this.activity = activities.find((ac) => ac.id === this.activityIndex);
+          this.title = 'Edit activity';
+          this.buttonTag = 'Update activity';
+        }
+        else {
+          this.title = 'Create new activity';
+          this.buttonTag = 'Create activity';
+        }
+
+      })
+    ).subscribe();
+
+
+
+    // if (this.activityIndex != null) {
+    //   this.activity = this.as.activities.find((ac) => ac.id === this.activityIndex);
+    //   this.title = 'Edit activity';
+    //   this.buttonTag = 'Update activity';
+    // }
+    // else {
+    //   this.title = 'Create new activity';
+    //   this.buttonTag = 'Create activity';
+    // }
     this.createForm();
   }
 
   createForm() {
-    console.log(this.activity);
     this.activityForm = this.fb.group({
       name: [this.activity.name ? this.activity.name : null, [Validators.required, Validators.minLength(3), Validators.maxLength(55)]],
       category: [this.activity.category ? this.activity.category : null, [Validators.required]],
@@ -104,7 +125,6 @@ export class AdminActivitiesCrudComponent implements OnInit {
   }
 
   handleActivityForm() {
-    console.log()
     const activity: Activity = {
       name: this.name.value,
       category: this.category.value,
@@ -120,19 +140,33 @@ export class AdminActivitiesCrudComponent implements OnInit {
       participatingUsers: this.state.value != 'Cancelled' ? this.activity.participatingUsers : []
     };
 
+    //   if (this.educationIndex != null) {
+    //     this.store$.dispatch(UserActions.UserUpdateEducation({ user: u, oldEducation: this.education, newEducation: edu }));
+    //   }
+    //   else {
+    //     this.store$.dispatch(UserActions.UserCreateEducation({ user: u, education: edu }));
+    //   }
+    // });
+    // this.router.navigate(['/user/profile']);
+
+
+
     if (this.activityIndex != null) {
       activity.id = this.activityIndex;
-      this.as.updateActivity(activity).subscribe(
-        () => console.log(`Activity ${this.activityIndex} from user ${this.user.email} updated.`)
-      )
+      this.store$.dispatch(ActivityActions.ActivityUpdate({ activity: activity }));
+      // activity.id = this.activityIndex;
+      // this.as.updateActivity(activity).subscribe(
+      //   () => console.log(`Activity ${this.activityIndex} from user ${this.user.email} updated.`)
+      // )
     }
     else {
-      this.as.createActivity(activity).subscribe(
-        () => {
-          this.as.getActivities().subscribe();
-          console.log(`Created new activity from user ${this.user.email}`);
-        }
-      );
+      this.store$.dispatch(ActivityActions.ActivityCreate({ activity: activity }));
+      // this.as.createActivity(activity).subscribe(
+      //   () => {
+      //     this.as.getActivities().subscribe();
+      //     console.log(`Created new activity from user ${this.user.email}`);
+      //   }
+      // );
     }
 
     this.router.navigate(['/activities/admin']);

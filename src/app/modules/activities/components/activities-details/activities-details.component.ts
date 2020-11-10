@@ -11,10 +11,10 @@ import * as UserSelectors from '@store/user/user.selector';
 import * as ActivitySelectors from '@store/activity/activity.selector';
 import * as UserActions from '@store/user/user.action';
 import * as ActivityActions from '@store/activity/activity.action';
-import { ActivitiesFavoritesService } from '../../services/activities-favorites.service';
+import { ActivitiesFavoritesService } from '../../../../shared/services/activities-favorites.service';
 import { ACTIVITY_STATUS } from '@constants/activity-status.constant';
 import { UserActionTypes } from '@store/user/user.action';
-import { last, skipWhile, tap } from 'rxjs/operators';
+import { last, map, skipUntil, skipWhile, tap } from 'rxjs/operators';
 import { ActivityState } from '@store/activity/activity.state';
 
 @Component({
@@ -33,20 +33,56 @@ export class ActivitiesDetailsComponent implements OnInit {
   public userLoggedIn$: Observable<User> = this.store$.select(UserSelectors.selectUser);
   public activityState$: Observable<ActivityState> = this.store$.select(ActivitySelectors.selectAllActivityState);
 
-  constructor(/*private us: UserService, private as: ActivitiesService,*/ private favService: ActivitiesFavoritesService, /*private router: Router,*/ private store$: Store<AppStore>) { }
+  constructor(/*private us: UserService, private as: ActivitiesService, private favService: ActivitiesFavoritesService, private router: Router,*/ private store$: Store<AppStore>) { }
 
   ngOnInit(): void {
     // this.user = this.us.userLoggedIn;
-    this.userLoggedIn$.subscribe(userLoggedIn => this.user = userLoggedIn);
+    this.userLoggedIn$.pipe(
+      skipWhile(user => user === null),
+      map(userLoggedIn => {
+        this.user = userLoggedIn;
+        if (userLoggedIn.favoriteActivities && this.activity) {
+          this.user.favoriteActivities.find(activityId => activityId == this.activity.id) !== undefined ? this.favorite = true : this.favorite = false;
+        }
+        else this.favorite = false;
+      })
+    ).subscribe();
+
     this.activityState$.pipe(
-      skipWhile(activityState => activityState.activities === null)
-    ).subscribe(activityState => {
-      this.activity = activityState.activities.find(ac => ac.id === activityState.activityToShow);
-      if (this.activity) {
-        this.favorite = this.favService.isFavorite(this.user, this.activity);
-        this.checkStatus(this.activity);
-      }
-    });
+      skipWhile(activityState => activityState.loading === true),
+      map(activityState => {
+        const activity = activityState.activities.find(ac => ac.id === activityState.activityToShow);
+        if (activity) {
+          this.activity = activity;
+          if (this.user) {
+            if (this.user.favoriteActivities) {
+              this.user.favoriteActivities.find(activityId => activityId == this.activity.id) !== undefined ? this.favorite = true : this.favorite = false;
+            }
+            else this.favorite = false;
+
+          }
+          this.checkStatus(this.activity);
+        }
+      })
+    ).subscribe();
+
+    // this.userLoggedIn$.pipe(
+    //   skipWhile(user => user === null),
+    //   skipUntil(this.activityState$.pipe(
+    //     tap(a => console.log('skipuntil', a)),
+    //     skipWhile(activityState => activityState.activityToShow !== null),
+    //   ))
+    // ).subscribe(userLoggedIn => {
+    //   console.log('suscribe', this.activity)
+    //   this.user = userLoggedIn;
+    //   if (userLoggedIn.favoriteActivities) {
+    //     userLoggedIn.favoriteActivities.find(activityId => activityId == this.activity.id) !== -1 ? this.favorite = true : this.favorite = false;
+    //   }
+    //   else this.favorite = false;
+    // });
+
+
+
   }
 
   checkStatus(ac: Activity) {

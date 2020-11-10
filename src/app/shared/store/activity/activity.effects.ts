@@ -36,6 +36,45 @@ export class ActivityEffects {
     catchError(err => of({ type: ActivityActions.ActivityActionTypes.ACTIVITY_SELECT_ERROR, err: err }))
   ));
 
+  /* create activity */
+  createActivity$ = createEffect(() => this.actions$.pipe(
+    ofType(ActivityActions.ActivityActionTypes.ACTIVITY_CREATE),
+    mergeMap((action: { type: string, activity: Activity }) => {
+      return this.as.createActivity(action.activity).pipe(
+        map(() => {
+          return { type: ActivityActions.ActivityActionTypes.ACTIVITY_CREATE_SUCCESS, activity: action.activity }
+        }),
+        catchError(err => of({ type: ActivityActions.ActivityActionTypes.ACTIVITY_CREATE_ERROR, err: err }))
+      )
+    })
+  ));
+
+  /* update activity */
+  updateActivity$ = createEffect(() => this.actions$.pipe(
+    ofType(ActivityActions.ActivityActionTypes.ACTIVITY_UPDATE),
+    mergeMap((action: { type: string, activity: Activity }) => {
+      return this.as.updateActivity(action.activity).pipe(
+        tap(a => console.log(a)),
+        map(() => {
+          return { type: ActivityActions.ActivityActionTypes.ACTIVITY_UPDATE_SUCCESS, activity: action.activity }
+        }),
+        catchError(err => of({ type: ActivityActions.ActivityActionTypes.ACTIVITY_UPDATE_ERROR, err: err }))
+      )
+    })
+  ));
+
+  /* delete activity */
+  deleteActivity$ = createEffect(() => this.actions$.pipe(
+    ofType(ActivityActions.ActivityActionTypes.ACTIVITY_DELETE),
+    mergeMap((action: { type: string, activityId: number }) => {
+      return this.as.deleteActivity(action.activityId).pipe(
+        map(() => {
+          return { type: ActivityActions.ActivityActionTypes.ACTIVITY_DELETE_SUCCESS, activityId: action.activityId }
+        }),
+        catchError(err => of({ type: ActivityActions.ActivityActionTypes.ACTIVITY_DELETE_ERROR, err: err }))
+      )
+    })
+  ));
 
   /* signup */
   signup$ = createEffect(() => this.actions$.pipe(

@@ -45,6 +45,10 @@ export enum UserActionTypes {
   USER_DELETE_EDUCATION_SUCCESS = '[User/Education] USER_DELETE_EDUCATION_SUCCESS',
   USER_DELETE_EDUCATION_ERROR = '[User/Education] USER_DELETE_EDUCATION_ERROR',
 
+  USER_LOAD_FAVORITE_ACTIVITIES = '[User/Favorite] USER_LOAD_FAVORITE_ACTIVITIES',
+  USER_LOAD_FAVORITE_ACTIVITIES_SUCCESS = '[User/Favorite] USER_LOAD_FAVORITE_ACTIVITIES_SUCCESS',
+  USER_LOAD_FAVORITE_ACTIVITIES_ERROR = '[User/Favorite] USER_LOAD_FAVORITE_ACTIVITIES_ERROR',
+
   USER_TOGGLE_FAVORITE_ACTIVITY = '[User/Favorite] USER_TOGGLE_FAVORITE_ACTIVITY',
   USER_TOGGLE_FAVORITE_ACTIVITY_SUCCESS = '[User/Favorite] USER_TOGGLE_FAVORITE_ACTIVITYE_SUCCESS',
   USER_TOGGLE_FAVORITE_ACTIVITY_ERROR = '[User/Favorite] USER_TOGGLE_FAVORITE_ACTIVITY_ERROR',
@@ -100,7 +104,12 @@ export const UserDeleteEducation = createAction(UserActionTypes.USER_DELETE_EDUC
 export const UserDeleteEducationSuccess = createAction(UserActionTypes.USER_DELETE_EDUCATION_SUCCESS, props<{ user: User }>());
 export const UserDeleteEducationError = createAction(UserActionTypes.USER_DELETE_EDUCATION_ERROR, props<{ err: String }>());
 
+/* load favorite activities */
+export const UserLoadFavoriteActivities = createAction(UserActionTypes.USER_LOAD_FAVORITE_ACTIVITIES, props<{ user: User }>());
+export const UserLoadFavoriteActivitiesSuccess = createAction(UserActionTypes.USER_LOAD_FAVORITE_ACTIVITIES_SUCCESS, props<{ favoriteActivities: number[] }>());
+export const UserLoadFavoriteActivitiesError = createAction(UserActionTypes.USER_LOAD_FAVORITE_ACTIVITIES_ERROR, props<{ err: String }>());
+
 /* toggle favorite activity */
 export const UserToggleFavoriteActivity = createAction(UserActionTypes.USER_TOGGLE_FAVORITE_ACTIVITY, props<{ user: User, activityId: number }>());
-export const UserToggleFavoriteActivitySuccess = createAction(UserActionTypes.USER_TOGGLE_FAVORITE_ACTIVITY_SUCCESS);
+export const UserToggleFavoriteActivitySuccess = createAction(UserActionTypes.USER_TOGGLE_FAVORITE_ACTIVITY_SUCCESS, props<{ favoriteActivities: number[] }>());
 export const UserToggleFavoriteActivityError = createAction(UserActionTypes.USER_TOGGLE_FAVORITE_ACTIVITY_ERROR, props<{ err: String }>());

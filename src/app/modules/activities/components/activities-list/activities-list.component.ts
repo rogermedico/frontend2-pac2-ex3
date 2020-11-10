@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 import * as UserSelectors from '@store/user/user.selector';
 import * as ActivitySelectors from '@store/activity/activity.selector';
 import * as ActivityActions from '@store/activity/activity.action';
-import { ActivitiesFavoritesService } from '../../services/activities-favorites.service';
+import { ActivitiesFavoritesService } from '../../../../shared/services/activities-favorites.service';
 
 @Component({
   selector: 'app-activities-list',
@@ -32,7 +32,8 @@ export class ActivitiesListComponent implements OnInit {
     this.userLoggedIn$.subscribe(userLoggedIn => this.user = userLoggedIn);
     this.activities$.subscribe(activities => {
       if (this.router.url === '/favorites') {
-        this.activities = activities.filter(ac => this.af.isFavorite(this.user, ac));
+        // this.activities = activities.filter(ac => this.af.isFavorite(this.user, ac));
+        this.activities = activities.filter(ac => this.user.favoriteActivities.find(faId => faId === ac.id));// this.af.isFavorite(this.user, ac));
       }
       else if (this.router.url === '/myactivities') {
         this.activities = activities.filter(ac => ac.participatingUsers.find(id => this.user.id === id));

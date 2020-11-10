@@ -12,47 +12,49 @@ export class ActivitiesFavoritesService {
 
   constructor(private us: UserService/*, private as: ActivitiesService*/) { }
 
-  isFavorite(user: User, ac: Activity): null | boolean {
-    if (!this.us.userLoggedIn) {
-      return null;
-    }
-    else {
-      const storedFavs: number[] = JSON.parse(localStorage.getItem(user.email));
-      if (storedFavs == null) {
-        return false;
-      }
-      else {
-        if (storedFavs.findIndex(id => id === ac.id) !== -1) {
-          return true;
-        }
-        else {
-          return false;
-        }
-      }
-    }
+  loadFavorites(user: User): Observable<number[]> {
+    return of(JSON.parse(localStorage.getItem(user.email)));
   }
 
-  toggleFavorite(user: User, activityId: number): Observable<boolean> {
+  // isFavorite(user: User, ac: Activity): null | boolean {
+  //   if (!this.us.userLoggedIn) {
+  //     return null;
+  //   }
+  //   else {
+  //     const storedFavs: number[] = JSON.parse(localStorage.getItem(user.email));
+  //     if (storedFavs == null) {
+  //       return false;
+  //     }
+  //     else {
+  //       if (storedFavs.findIndex(id => id === ac.id) !== -1) {
+  //         return true;
+  //       }
+  //       else {
+  //         return false;
+  //       }
+  //     }
+  //   }
+  // }
+
+  toggleFavorite(user: User, activityId: number): Observable<number[]> {
     const storedFavs: number[] = JSON.parse(localStorage.getItem(user.email));
 
     if (storedFavs == null) {
       localStorage.setItem(this.us.userLoggedIn.email, JSON.stringify([activityId]));
-      return of(true);
     }
     else {
       const favFound = storedFavs.findIndex(id => id === activityId);
       if (favFound === -1) {
         storedFavs.push(activityId);
         localStorage.setItem(this.us.userLoggedIn.email, JSON.stringify(storedFavs));
-        return of(true);
       }
       else {
         storedFavs.splice(favFound, 1);
         localStorage.setItem(this.us.userLoggedIn.email, JSON.stringify(storedFavs));
-        return of(false);
       }
 
     }
+    return of(JSON.parse(localStorage.getItem(user.email)));
   }
 
 

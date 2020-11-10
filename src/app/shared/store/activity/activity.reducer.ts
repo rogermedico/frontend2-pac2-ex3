@@ -38,6 +38,90 @@ const _activityReducer = createReducer(defaultActivityState,
     }
   }),
 
+  /* create activity */
+  on(ActivityActions.ActivityCreate, state => {
+    return {
+      ...state,
+      loading: true
+    }
+  }),
+
+  /* create activity success */
+  on(ActivityActions.ActivityCreateSuccess, (state, { activity }) => {
+    return {
+      ...state,
+      activities: [...state.activities, activity],
+      loading: false
+    }
+  }),
+
+  /* create activity error */
+  on(ActivityActions.ActivityCreateError, (state, { err }) => {
+    /* passar l'error a un servei de missatges ? */
+    console.log('ERROR: ', err)
+    return {
+      ...state,
+      loading: false
+    }
+  }),
+
+  /* update activity */
+  on(ActivityActions.ActivityUpdate, state => {
+    return {
+      ...state,
+      loading: true
+    }
+  }),
+
+  /* update activity success */
+  on(ActivityActions.ActivityUpdateSuccess, (state, { activity }) => {
+    return {
+      ...state,
+      activities: state.activities.map(a => {
+        if (a.id === activity.id) return activity;
+        else return a;
+      }),
+      loading: false
+    }
+  }),
+
+  /* update activity error */
+  on(ActivityActions.ActivityUpdateError, (state, { err }) => {
+    /* passar l'error a un servei de missatges ? */
+    console.log('ERROR: ', err)
+    return {
+      ...state,
+      loading: false
+    }
+  }),
+
+  /* delete activity */
+  on(ActivityActions.ActivityDelete, state => {
+    return {
+      ...state,
+      loading: true
+    }
+  }),
+
+  /* delete activity success */
+  on(ActivityActions.ActivityDeleteSuccess, (state, { activityId }) => {
+    return {
+      ...state,
+      activities: state.activities.filter(a => a.id !== activityId),
+      loading: false
+    }
+  }),
+
+  /* delete activity error */
+  on(ActivityActions.ActivityDeleteError, (state, { err }) => {
+    /* passar l'error a un servei de missatges ? */
+    console.log('ERROR: ', err)
+    return {
+      ...state,
+      loading: false
+    }
+  }),
+
   /* select */
   on(ActivityActions.ActivitySelect, state => {
     return {
@@ -124,250 +208,6 @@ const _activityReducer = createReducer(defaultActivityState,
       loading: false
     }
   }),
-
-  // /* logout */
-  // on(UserActions.UserLogout, state => {
-  //   return {
-  //     ...state,
-  //     loading: true
-  //   }
-  // }),
-
-  // /* logout success */
-  // on(UserActions.UserLogoutSuccess, state => {
-  //   return {
-  //     ...state,
-  //     user: null,
-  //     loading: false
-  //   }
-  // }),
-
-  // /* logout error */
-  // on(UserActions.UserLogoutError, (state, { err }) => {
-  //   /* passar l'error a un servei de missatges ? */
-  //   console.log('ERROR: ', err)
-  //   return {
-  //     ...state,
-  //     loading: false
-  //   }
-  // }),
-
-  // /* register */
-  // on(UserActions.UserRegister, state => {
-  //   return {
-  //     ...state,
-  //     loading: true
-  //   }
-  // }),
-
-  // /* register success */
-  // on(UserActions.UserRegisterSuccess, (state, { user }) => {
-  //   console.log('reducer register', user)
-  //   return {
-  //     ...state,
-  //     user: user,
-  //     loading: false
-  //   }
-  // }),
-
-  // /* register error */
-  // on(UserActions.UserRegisterError, (state, { err }) => {
-  //   /* passar l'error a un servei de missatges ? */
-  //   console.log('ERROR: ', err)
-  //   return {
-  //     ...state,
-  //     loading: false
-  //   }
-  // }),
-
-  // /* update profile */
-  // on(UserActions.UserUpdatePersonalData, state => {
-  //   return {
-  //     ...state,
-  //     loading: true
-  //   }
-  // }),
-
-  // /* update profile success */
-  // on(UserActions.UserUpdatePersonalDataSuccess, (state, { user }) => {
-  //   return {
-  //     ...state,
-  //     user: user,
-  //     loading: false
-  //   }
-  // }),
-
-  // /* update profile error */
-  // on(UserActions.UserUpdatePersonalDataError, (state, { err }) => {
-  //   /* passar l'error a un servei de missatges ? */
-  //   console.log('ERROR: ', err)
-  //   return {
-  //     ...state,
-  //     loading: false
-  //   }
-  // }),
-
-  // /* create language */
-  // on(UserActions.UserCreateLanguage, state => {
-  //   return {
-  //     ...state,
-  //     loading: true
-  //   }
-  // }),
-
-  // /* create language success */
-  // on(UserActions.UserCreateLanguageSuccess, (state, { user }) => {
-  //   return {
-  //     ...state,
-  //     user: user,
-  //     loading: false
-  //   }
-  // }),
-
-  // /* create language error */
-  // on(UserActions.UserCreateLanguageError, (state, { err }) => {
-  //   /* passar l'error a un servei de missatges ? */
-  //   console.log('ERROR: ', err)
-  //   return {
-  //     ...state,
-  //     loading: false
-  //   }
-  // }),
-
-  // /* update language */
-  // on(UserActions.UserUpdateLanguage, state => {
-  //   return {
-  //     ...state,
-  //     loading: true
-  //   }
-  // }),
-
-  // /* update language success */
-  // on(UserActions.UserUpdateLanguageSuccess, (state, { user }) => {
-  //   return {
-  //     ...state,
-  //     user: user,
-  //     loading: false
-  //   }
-  // }),
-
-  // /* update language error */
-  // on(UserActions.UserUpdateLanguageError, (state, { err }) => {
-  //   /* passar l'error a un servei de missatges ? */
-  //   console.log('ERROR: ', err)
-  //   return {
-  //     ...state,
-  //     loading: false
-  //   }
-  // }),
-
-  // /* delete language */
-  // on(UserActions.UserDeleteLanguage, state => {
-  //   return {
-  //     ...state,
-  //     loading: true
-  //   }
-  // }),
-
-  // /* delete language success */
-  // on(UserActions.UserDeleteLanguageSuccess, (state, { user }) => {
-  //   return {
-  //     ...state,
-  //     user: user,
-  //     loading: false
-  //   }
-  // }),
-
-  // /* delete language error */
-  // on(UserActions.UserDeleteLanguageError, (state, { err }) => {
-  //   /* passar l'error a un servei de missatges ? */
-  //   console.log('ERROR: ', err)
-  //   return {
-  //     ...state,
-  //     loading: false
-  //   }
-  // }),
-
-  // /* create education */
-  // on(UserActions.UserCreateEducation, state => {
-  //   return {
-  //     ...state,
-  //     loading: true
-  //   }
-  // }),
-
-  // /* create education success */
-  // on(UserActions.UserCreateEducationSuccess, (state, { user }) => {
-  //   return {
-  //     ...state,
-  //     user: user,
-  //     loading: false
-  //   }
-  // }),
-
-  // /* create education error */
-  // on(UserActions.UserCreateEducationError, (state, { err }) => {
-  //   /* passar l'error a un servei de missatges ? */
-  //   console.log('ERROR: ', err)
-  //   return {
-  //     ...state,
-  //     loading: false
-  //   }
-  // }),
-
-  // /* update education */
-  // on(UserActions.UserUpdateEducation, state => {
-  //   return {
-  //     ...state,
-  //     loading: true
-  //   }
-  // }),
-
-  // /* update education success */
-  // on(UserActions.UserUpdateEducationSuccess, (state, { user }) => {
-  //   return {
-  //     ...state,
-  //     user: user,
-  //     loading: false
-  //   }
-  // }),
-
-  // /* update education error */
-  // on(UserActions.UserUpdateEducationError, (state, { err }) => {
-  //   /* passar l'error a un servei de missatges ? */
-  //   console.log('ERROR: ', err)
-  //   return {
-  //     ...state,
-  //     loading: false
-  //   }
-  // }),
-
-  // /* delete education */
-  // on(UserActions.UserDeleteEducation, state => {
-  //   return {
-  //     ...state,
-  //     loading: true
-  //   }
-  // }),
-
-  // /* delete education success */
-  // on(UserActions.UserDeleteEducationSuccess, (state, { user }) => {
-  //   return {
-  //     ...state,
-  //     user: user,
-  //     loading: false
-  //   }
-  // }),
-
-  // /* delete education error */
-  // on(UserActions.UserDeleteEducationError, (state, { err }) => {
-  //   /* passar l'error a un servei de missatges ? */
-  //   console.log('ERROR: ', err)
-  //   return {
-  //     ...state,
-  //     loading: false
-  //   }
-  // })
 
 );
 
