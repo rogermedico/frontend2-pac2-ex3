@@ -1,5 +1,5 @@
 <div>
-  <h2 class="section-title">{{title}}</h2>{{favorite}}
+  <h2 class="section-title">{{title}}</h2>
   <div class="activity-content" *ngIf="activity">
     <div *ngIf="user && user.type !== 'company'" class="favorite-container">
       <a class="toggle-favorite-link" [routerLink]="" (click)="toggleFavorite()">

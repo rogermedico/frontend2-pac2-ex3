@@ -35,10 +35,12 @@ export class ActivitiesDetailsComponent implements OnInit {
       skipWhile(user => user === null),
       map(userLoggedIn => {
         this.user = userLoggedIn;
-        if (userLoggedIn.favoriteActivities && this.activity) {
-          this.user.favoriteActivities.find(activityId => activityId == this.activity.id) !== undefined ? this.favorite = true : this.favorite = false;
+        if (userLoggedIn) {
+          if (userLoggedIn.favoriteActivities && this.activity) {
+            this.user.favoriteActivities.find(activityId => activityId == this.activity.id) !== undefined ? this.favorite = true : this.favorite = false;
+          }
+          else this.favorite = false;
         }
-        else this.favorite = false;
       })
     ).subscribe();
 
