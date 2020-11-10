@@ -10,31 +10,11 @@ import { Observable, of } from 'rxjs';
 })
 export class ActivitiesFavoritesService {
 
-  constructor(private us: UserService/*, private as: ActivitiesService*/) { }
+  constructor(private us: UserService) { }
 
   loadFavorites(user: User): Observable<number[]> {
     return of(JSON.parse(localStorage.getItem(user.email)));
   }
-
-  // isFavorite(user: User, ac: Activity): null | boolean {
-  //   if (!this.us.userLoggedIn) {
-  //     return null;
-  //   }
-  //   else {
-  //     const storedFavs: number[] = JSON.parse(localStorage.getItem(user.email));
-  //     if (storedFavs == null) {
-  //       return false;
-  //     }
-  //     else {
-  //       if (storedFavs.findIndex(id => id === ac.id) !== -1) {
-  //         return true;
-  //       }
-  //       else {
-  //         return false;
-  //       }
-  //     }
-  //   }
-  // }
 
   toggleFavorite(user: User, activityId: number): Observable<number[]> {
     const storedFavs: number[] = JSON.parse(localStorage.getItem(user.email));

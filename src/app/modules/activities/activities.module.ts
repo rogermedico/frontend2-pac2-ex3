@@ -7,8 +7,6 @@ import { ActivitiesRoutingModule } from './activities-routing.module';
 import { AdminActivitiesCrudComponent } from './components/admin-activities-crud/admin-activities-crud.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-
-
 @NgModule({
   declarations: [
     ActivitiesListComponent,

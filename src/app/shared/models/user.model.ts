@@ -3,7 +3,6 @@ import { NATIONALITIES } from '@constants/nationalities.constant';
 import { Education } from '@models/education.model';
 import { Language } from '@models/language.model';
 
-
 export interface User {
   id?: number;
   name: string;

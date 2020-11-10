@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { EDUCATION_TYPE, EDUCATION_TYPE_CICLE, EDUCATION_TYPE_UNIVERSITY } from '@constants/education.constant';
 import { Education } from '@models/education.model';
 import { User } from '@models/user.model';
-import { UserService } from '@services/user.service';
 import { Observable } from 'rxjs';
 import * as UserSelectors from '@store/user/user.selector';
 import * as UserActions from '@store/user/user.action';
@@ -20,7 +19,6 @@ import { Store } from '@ngrx/store';
 export class EducationCrudComponent implements OnInit {
 
   public title: String;
-  // public user: User;
   public educations$: Observable<Education[]> = this.store$.select(UserSelectors.selectEducation);
   public userLoggedIn$: Observable<User> = this.store$.select(UserSelectors.selectUser);
   public education: Education = {
@@ -36,7 +34,7 @@ export class EducationCrudComponent implements OnInit {
   public universityLevels = Object.values(EDUCATION_TYPE_UNIVERSITY);
   public cicleLevels = Object.values(EDUCATION_TYPE_CICLE);
 
-  constructor(private fb: FormBuilder, private us: UserService, private activatedRoute: ActivatedRoute, private router: Router, private store$: Store<AppStore>) { }
+  constructor(private store$: Store<AppStore>, private fb: FormBuilder, private activatedRoute: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     this.educationIndex = parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
@@ -102,22 +100,6 @@ export class EducationCrudComponent implements OnInit {
       }
     });
     this.router.navigate(['/user/profile']);
-
-
-    // if (this.educationIndex != null) {
-    //   this.user.education[this.educationIndex] = e;
-    // }
-    // else {
-    //   this.user.education.push(e);
-    // }
-
-    // this.us.updateUser(this.user).subscribe(
-    //   () => {
-    //     if (this.educationIndex) console.log(`Education from user ${this.user.email} updated: `, this.user);
-    //     else console.log(`Created new education from user ${this.user.email}: `, this.user);
-    //     this.router.navigate(['/user/profile']);
-    //   }
-    // );
 
   }
 

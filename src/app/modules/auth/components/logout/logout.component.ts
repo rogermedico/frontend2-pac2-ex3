@@ -4,10 +4,9 @@ import { AppStore } from '@models/store.model';
 import { Store } from '@ngrx/store';
 import * as UserActions from '@store/user/user.action';
 import * as UserSelectors from '@store/user/user.selector';
-import { UserService } from '@services/user.service';
 import { Observable } from 'rxjs';
 import { User } from '@models/user.model';
-import { count, map, take, tap } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-logout',
@@ -28,21 +27,11 @@ export class LogoutComponent implements OnInit {
   logout() {
 
     this.userLoggedIn$.pipe(
-      take(1)
-    ).subscribe(user => {
-      this.store$.dispatch(UserActions.UserLogout({ user: user }));
-    })
-    // )
-
-    // if (this.userService.userLoggedIn === undefined) {
-    //   console.log('Nobody logged in at the moment');
-    //   return;
-    // }
-    // else {
-    //   this.userService.logout().subscribe(
-    //     (us) => console.log('User logged out')
-    //   )
-    // }
+      take(1),
+      map(user => {
+        this.store$.dispatch(UserActions.UserLogout({ user: user }))
+      })
+    ).subscribe();
 
   }
 }

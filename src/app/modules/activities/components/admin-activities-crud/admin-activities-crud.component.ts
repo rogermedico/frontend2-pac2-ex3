@@ -53,10 +53,10 @@ export class AdminActivitiesCrudComponent implements OnInit {
   public activityStatus = Object.values(ACTIVITY_STATUS);
   public ACTIVITY_STATUS = ACTIVITY_STATUS;
 
-  constructor(private fb: FormBuilder, /*private us: UserService,*/ private as: ActivitiesService, private activatedRoute: ActivatedRoute, private router: Router, private store$: Store<AppStore>) { }
+  constructor(private store$: Store<AppStore>, private fb: FormBuilder, private activatedRoute: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
-    // this.userLoggedIn = this.us.userLoggedIn;
+
     this.userLoggedIn$.subscribe(userLoggedIn => this.user = userLoggedIn);
     this.activityIndex = parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
     this.activityIndex = Number.isNaN(this.activityIndex) ? null : this.activityIndex;
@@ -76,17 +76,6 @@ export class AdminActivitiesCrudComponent implements OnInit {
       })
     ).subscribe();
 
-
-
-    // if (this.activityIndex != null) {
-    //   this.activity = this.as.activities.find((ac) => ac.id === this.activityIndex);
-    //   this.title = 'Edit activity';
-    //   this.buttonTag = 'Update activity';
-    // }
-    // else {
-    //   this.title = 'Create new activity';
-    //   this.buttonTag = 'Create activity';
-    // }
     this.createForm();
   }
 
@@ -110,7 +99,6 @@ export class AdminActivitiesCrudComponent implements OnInit {
 
     this.category.valueChanges.subscribe(
       (value) => {
-        // this.activity.subcategory = null;
         this.activityForm.patchValue({
           subcategory: ''
         });
@@ -140,33 +128,12 @@ export class AdminActivitiesCrudComponent implements OnInit {
       participatingUsers: this.state.value != 'Cancelled' ? this.activity.participatingUsers : []
     };
 
-    //   if (this.educationIndex != null) {
-    //     this.store$.dispatch(UserActions.UserUpdateEducation({ user: u, oldEducation: this.education, newEducation: edu }));
-    //   }
-    //   else {
-    //     this.store$.dispatch(UserActions.UserCreateEducation({ user: u, education: edu }));
-    //   }
-    // });
-    // this.router.navigate(['/user/profile']);
-
-
-
     if (this.activityIndex != null) {
       activity.id = this.activityIndex;
       this.store$.dispatch(ActivityActions.ActivityUpdate({ activity: activity }));
-      // activity.id = this.activityIndex;
-      // this.as.updateActivity(activity).subscribe(
-      //   () => console.log(`Activity ${this.activityIndex} from user ${this.user.email} updated.`)
-      // )
     }
     else {
       this.store$.dispatch(ActivityActions.ActivityCreate({ activity: activity }));
-      // this.as.createActivity(activity).subscribe(
-      //   () => {
-      //     this.as.getActivities().subscribe();
-      //     console.log(`Created new activity from user ${this.user.email}`);
-      //   }
-      // );
     }
 
     this.router.navigate(['/activities/admin']);

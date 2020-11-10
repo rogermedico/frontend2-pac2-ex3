@@ -6,7 +6,6 @@ import { Language } from '@models/language.model';
 import { AppStore } from '@models/store.model';
 import { User } from '@models/user.model';
 import { Store } from '@ngrx/store';
-import { UserService } from '@services/user.service';
 import { Observable } from 'rxjs';
 import * as UserSelectors from '@store/user/user.selector';
 import * as UserActions from '@store/user/user.action';
@@ -20,7 +19,6 @@ import { take } from 'rxjs/operators';
 export class LanguageCrudComponent implements OnInit {
 
   public title: String;
-  // public user: User;
   public languages$: Observable<Language[]> = this.store$.select(UserSelectors.selectLanguages);
   public userLoggedIn$: Observable<User> = this.store$.select(UserSelectors.selectUser);
   public language: Language = {
@@ -34,15 +32,13 @@ export class LanguageCrudComponent implements OnInit {
   public languageNames = Object.values(LANGUAGES);
   public languageLevels = Object.values(LANGUAGE_LEVELS);
 
-  constructor(private fb: FormBuilder, private us: UserService, private activatedRoute: ActivatedRoute, private router: Router, private store$: Store<AppStore>) { }
+  constructor(private store$: Store<AppStore>, private fb: FormBuilder, private activatedRoute: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     this.languageIndex = parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
     this.languageIndex = Number.isNaN(this.languageIndex) ? null : this.languageIndex;
 
     this.userLoggedIn$.subscribe(u => {
-
-
       if ((this.languageIndex != null) && (this.languageIndex >= 0) && (this.languageIndex < u.languages.length)) {
         this.title = 'Edit language';
         this.buttonTag = 'Update language';
@@ -51,23 +47,11 @@ export class LanguageCrudComponent implements OnInit {
       else {
         this.title = 'Create new language';
         this.buttonTag = 'Create language';
-
       }
+
       this.createForm(this.language);
 
     });
-
-    // this.user = this.us.userLoggedIn;
-    // if ((this.languageIndex != null) && (this.languageIndex >= 0) && (this.languageIndex < this.user.languages.length)) {
-    //   this.title = 'Edit language';
-    //   this.buttonTag = 'Update language';
-    //   this.language = this.user.languages[this.languageIndex];
-    // }
-    // else {
-    //   this.title = 'Create new language';
-    //   this.buttonTag = 'Create language';
-    // }
-    // this.createForm();
   }
 
   createForm(lang: Language) {
@@ -96,21 +80,6 @@ export class LanguageCrudComponent implements OnInit {
       }
     });
     this.router.navigate(['/user/profile']);
-
-    // if (this.languageIndex != null) {
-    //   this.user.languages[this.languageIndex] = lang;
-    // }
-    // else {
-    //   this.user.languages.push(lang);
-    // }
-
-    // this.us.updateUser(this.user).subscribe(
-    //   () => {
-    //     if (this.languageIndex) console.log(`Languages from user ${this.user.email} updated: `, this.user);
-    //     else console.log(`Created new language from user ${this.user.email}: `, this.user);
-    //     this.router.navigate(['/user/profile']);
-    //   }
-    // );
 
   }
 

@@ -9,8 +9,6 @@ import { LoginGuardService } from '@guards/login-guard.service';
 import { LogoutGuardService } from '@guards/logout-guard.service';
 import { PersonalDataGuard } from '@guards/personal-data-guard.service';
 
-
-
 const routes: Routes = [
   { path: "login", component: LoginComponent, canActivate: [LoginGuardService] },
   { path: "register", component: RegisterComponent, canActivate: [LoginGuardService] },

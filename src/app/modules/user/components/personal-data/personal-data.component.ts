@@ -1,17 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-
 import { NATIONALITIES } from '@constants/nationalities.constant';
 import { AppStore } from '@models/store.model';
-
 import { User } from '@models/user.model';
 import { Store } from '@ngrx/store';
-import { UserService } from '@services/user.service';
 import { nifValidator } from '@validators/nif.validator';
 import { Observable } from 'rxjs';
 import * as UserSelectors from '@store/user/user.selector';
-import { take, tap } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { USER_TYPES } from '@constants/user-types.constant';
 import * as UserActions from '@store/user/user.action';
 
@@ -32,18 +28,13 @@ export class PersonalDataComponent implements OnInit {
   public profileSaved: Boolean = false;
   public profileForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private us: UserService, private router: Router, private store$: Store<AppStore>) { }
+  constructor(private store$: Store<AppStore>, private fb: FormBuilder) { }
 
   ngOnInit(): void {
 
     this.userLoggedIn$.pipe(
       take(1)
     ).subscribe(user => this.createForm(user));
-    // this.user = this.us.userLoggedIn;
-    // this.createForm();
-    // this.profileForm.valueChanges.subscribe(
-    //   () => this.us.profileDataSaved = false
-    // );
 
   }
 
@@ -66,10 +57,6 @@ export class PersonalDataComponent implements OnInit {
       this.profileForm.addControl('companyDescription', this.fb.control(u.companyDescription));
       this.profileForm.addControl('cif', this.fb.control(u.cif));
     }
-
-    this.profileForm.valueChanges.subscribe(
-      () => this.us.profileDataSaved = false
-    );
 
   }
 
@@ -94,17 +81,7 @@ export class PersonalDataComponent implements OnInit {
           user.cif = this.cif.value;
         }
 
-
         this.store$.dispatch(UserActions.UserUpdatePersonalData({ user: user }));
-
-        // this.us.updateUser(user).subscribe(
-        //   () => {
-        //     this.profileSaved = true;
-        //     this.us.profileDataSaved = true;
-        //     setTimeout(() => this.profileSaved = false, 10000);
-        //     console.log(`User ${user.email} updated, new values:`, user);
-        //   }
-        // );
       }
     })
   }
