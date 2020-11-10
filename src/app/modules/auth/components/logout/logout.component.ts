@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppStore } from '@models/store.model';
 import { Store } from '@ngrx/store';
-import * as UserActions from '@store/user/user.action';
+import * as AuthActions from '@store/auth/auth.action';
 import * as UserSelectors from '@store/user/user.selector';
 import { Observable } from 'rxjs';
 import { User } from '@models/user.model';
@@ -29,7 +29,7 @@ export class LogoutComponent implements OnInit {
     this.userLoggedIn$.pipe(
       take(1),
       map(user => {
-        this.store$.dispatch(UserActions.UserLogout({ user: user }))
+        this.store$.dispatch(AuthActions.AuthLogout({ user: user }))
       })
     ).subscribe();
 

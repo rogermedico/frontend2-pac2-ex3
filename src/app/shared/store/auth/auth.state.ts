@@ -1,6 +1,7 @@
-import { User } from '@models/user.model';
+import { Login } from '@models/login.model';
 
-export interface UserState {
-  user: User;
+export interface AuthState {
+  loginInfo: Login;
+  wrongCredentials: boolean;
   loading: boolean;
 }

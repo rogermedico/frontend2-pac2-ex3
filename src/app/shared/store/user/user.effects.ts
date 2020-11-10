@@ -16,34 +16,31 @@ export class UserEffects {
 
   constructor(private actions$: Actions, private us: UserService, private favService: ActivitiesFavoritesService) { }
 
-  /* login */
-  login$ = createEffect(() => this.actions$.pipe(
-    ofType(UserActions.UserActionTypes.USER_LOGIN),
-    mergeMap((action: { type: string, loginInfo: Login }) => this.us.login(action.loginInfo).pipe(
-      mergeMap(user => {
-        if (user.type == USER_TYPES.tourist) {
-          return [
-            { type: UserActions.UserActionTypes.USER_LOGIN_SUCCESS, user: user },
-            { type: UserActions.UserActionTypes.USER_LOAD_FAVORITE_ACTIVITIES, user: user }
-          ]
-        }
-        else {
-          return [{ type: UserActions.UserActionTypes.USER_LOGIN_SUCCESS, user: user }];
-        }
-      }),
-      catchError(err => of({ type: UserActions.UserActionTypes.USER_LOGIN_ERROR, err: err }))
-    ))
+  /* signin */
+  signin$ = createEffect(() => this.actions$.pipe(
+    ofType(UserActions.UserActionTypes.USER_SIGNIN),
+    mergeMap((action: { type: string, user: User }) => {
+      if (action.user.type == USER_TYPES.tourist) {
+        return [
+          { type: UserActions.UserActionTypes.USER_SIGNIN_SUCCESS, user: action.user },
+          { type: UserActions.UserActionTypes.USER_LOAD_FAVORITE_ACTIVITIES, user: action.user }
+        ]
+      }
+      else {
+        return [{ type: UserActions.UserActionTypes.USER_SIGNIN_SUCCESS, user: action.user }];
+      }
+    }),
+    catchError(err => of({ type: UserActions.UserActionTypes.USER_SIGNIN_ERROR, err: err }))
   ));
 
-  /* logout */
+
+  /* signout */
   logout$ = createEffect(() => this.actions$.pipe(
-    ofType(UserActions.UserActionTypes.USER_LOGOUT),
-    mergeMap((action: { type: string, user: User }) => this.us.logout(action.user).pipe(
-      map(user => {
-        return { type: UserActions.UserActionTypes.USER_LOGOUT_SUCCESS }
-      }),
-      catchError(err => of({ type: UserActions.UserActionTypes.USER_LOGOUT_ERROR, err: err }))
-    ))
+    ofType(UserActions.UserActionTypes.USER_SIGNOUT),
+    map(() => {
+      return { type: UserActions.UserActionTypes.USER_SIGNOUT_SUCCESS }
+    }),
+    catchError(err => of({ type: UserActions.UserActionTypes.USER_SIGNOUT_ERROR, err: err }))
   ));
 
   /* register */

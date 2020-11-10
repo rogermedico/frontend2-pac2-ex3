@@ -5,13 +5,13 @@ import { Language } from '@models/language.model';
 import { Education } from '@models/education.model';
 
 export enum UserActionTypes {
-  USER_LOGIN = '[User/Auth] USER_LOGIN',
-  USER_LOGIN_SUCCESS = '[User/Auth] USER_LOGIN_SUCCESS',
-  USER_LOGIN_ERROR = '[User/Auth] USER_LOGIN_ERROR',
+  USER_SIGNIN = '[User/Auth] USER_SIGNIN',
+  USER_SIGNIN_SUCCESS = '[User/Auth] USER_SIGNIN_SUCCESS',
+  USER_SIGNIN_ERROR = '[User/Auth] USER_SIGNIN_ERROR',
 
-  USER_LOGOUT = '[User/Auth] USER_LOGOUT',
-  USER_LOGOUT_SUCCESS = '[User/Auth] USER_LOGOUT_SUCCESS',
-  USER_LOGOUT_ERROR = '[User/Auth] USER_LOGOUT_ERROR',
+  USER_SIGNOUT = '[User/Auth] USER_SIGNOUT',
+  USER_SIGNOUT_SUCCESS = '[User/Auth] USER_SIGNOUT_SUCCESS',
+  USER_SIGNOUT_ERROR = '[User/Auth] USER_SIGNOUT_ERROR',
 
   USER_REGISTER = '[User/Auth] USER_REGISTER',
   USER_REGISTER_SUCCESS = '[User/Auth] USER_REGISTER_SUCCESS',
@@ -54,15 +54,15 @@ export enum UserActionTypes {
   USER_TOGGLE_FAVORITE_ACTIVITY_ERROR = '[User/Favorite] USER_TOGGLE_FAVORITE_ACTIVITY_ERROR',
 }
 
-/* auth login */
-export const UserLogin = createAction(UserActionTypes.USER_LOGIN, props<{ loginInfo: Login }>());
-export const UserLoginSuccess = createAction(UserActionTypes.USER_LOGIN_SUCCESS, props<{ user: User }>());
-export const UserLoginError = createAction(UserActionTypes.USER_LOGIN_ERROR, props<{ err: String }>());
+/* signin */
+export const UserSignin = createAction(UserActionTypes.USER_SIGNIN, props<{ loginInfo: Login }>());
+export const UserSigninSuccess = createAction(UserActionTypes.USER_SIGNIN_SUCCESS, props<{ user: User }>());
+export const UserSigninError = createAction(UserActionTypes.USER_SIGNIN_ERROR, props<{ err: String }>());
 
-/* auth logout */
-export const UserLogout = createAction(UserActionTypes.USER_LOGOUT, props<{ user: User }>());
-export const UserLogoutSuccess = createAction(UserActionTypes.USER_LOGOUT_SUCCESS);
-export const UserLogoutError = createAction(UserActionTypes.USER_LOGOUT_ERROR, props<{ err: String }>());
+/* signout */
+export const UserSignout = createAction(UserActionTypes.USER_SIGNOUT);
+export const UserSignoutSuccess = createAction(UserActionTypes.USER_SIGNOUT_SUCCESS);
+export const UserSignoutError = createAction(UserActionTypes.USER_SIGNOUT_ERROR, props<{ err: String }>());
 
 /* auth register */
 export const UserRegister = createAction(UserActionTypes.USER_REGISTER, props<{ user: User }>());

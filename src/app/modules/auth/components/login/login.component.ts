@@ -1,26 +1,42 @@
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Router } from '@angular/router';
 import { Login } from '@models/login.model';
 import { Store } from '@ngrx/store';
 import { AppStore } from '@models/store.model';
-import * as UserActions from '@store/user/user.action';
+import * as AuthActions from '@store/auth/auth.action';
+import * as AuthSelectors from '@store/auth/auth.selector';
+import { Observable, Subscription } from 'rxjs';
+import { delay, map, skipWhile } from 'rxjs/operators';
+import { AuthState } from '@store/auth/auth.state';
 
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.css"],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   public title: string = 'Login';
   public wrongCredentials: Boolean = false;
   public loginForm: FormGroup;
+  public authState$: Observable<AuthState> = this.store$.select(AuthSelectors.selectAuthState);
+  private authStateSubscription: Subscription;
 
   constructor(private store$: Store<AppStore>, private fb: FormBuilder, private router: Router) { }
 
   ngOnInit(): void {
     this.createForm();
+    this.authStateSubscription = this.authState$.pipe(
+      skipWhile(as => as.loading === true),
+      map(as => {
+        if (as.wrongCredentials == false && !as.loading) this.router.navigate(['']);
+      })
+    ).subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.authStateSubscription.unsubscribe();
   }
 
   createForm() {
@@ -37,18 +53,12 @@ export class LoginComponent implements OnInit {
       password: this.password.value
     }
 
-    this.store$.dispatch(UserActions.UserLogin({ loginInfo: loginInfo }));
-    this.wrongCredentials = false;
-    this.router.navigate(['']);
+    this.store$.dispatch(AuthActions.AuthLogin({ loginInfo: loginInfo }));
 
   }
 
-  get username() {
-    return this.loginForm.get('username');
-  }
+  get username() { return this.loginForm.get('username'); }
 
-  get password() {
-    return this.loginForm.get('password');
-  }
+  get password() { return this.loginForm.get('password'); }
 
 }

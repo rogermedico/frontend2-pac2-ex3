@@ -19,7 +19,7 @@
         </div>
       </div>
       <div>
-        <div class="error-form" *ngIf="wrongCredentials">
+        <div class="error-form" *ngIf="(authState$ | async).wrongCredentials">
           Wrong user or password, try again
         </div>
         <button class="login-button" type="submit" [disabled]="!loginForm.valid">Login</button>

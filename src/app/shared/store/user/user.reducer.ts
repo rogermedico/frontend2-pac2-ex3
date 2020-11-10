@@ -10,16 +10,16 @@ const defaultUserState: UserState = {
 
 const _userReducer = createReducer(defaultUserState,
 
-  /* login */
-  on(UserActions.UserLogin, state => {
+  /* signin */
+  on(UserActions.UserSignin, state => {
     return {
       ...state,
       loading: true
     }
   }),
 
-  /* login success */
-  on(UserActions.UserLoginSuccess, (state, { user }) => {
+  /* signin success */
+  on(UserActions.UserSigninSuccess, (state, { user }) => {
     return {
       ...state,
       user: user,
@@ -27,8 +27,8 @@ const _userReducer = createReducer(defaultUserState,
     }
   }),
 
-  /* login error */
-  on(UserActions.UserLoginError, (state, { err }) => {
+  /* signin error */
+  on(UserActions.UserSigninError, (state, { err }) => {
     /* passar l'error a un servei de missatges ? */
     console.log('ERROR: ', err)
     return {
@@ -37,16 +37,16 @@ const _userReducer = createReducer(defaultUserState,
     }
   }),
 
-  /* logout */
-  on(UserActions.UserLogout, state => {
+  /* signout */
+  on(UserActions.UserSignout, state => {
     return {
       ...state,
       loading: true
     }
   }),
 
-  /* logout success */
-  on(UserActions.UserLogoutSuccess, state => {
+  /* signout success */
+  on(UserActions.UserSignoutSuccess, state => {
     return {
       ...state,
       user: null,
@@ -54,8 +54,8 @@ const _userReducer = createReducer(defaultUserState,
     }
   }),
 
-  /* logout error */
-  on(UserActions.UserLogoutError, (state, { err }) => {
+  /* signout error */
+  on(UserActions.UserSignoutError, (state, { err }) => {
     /* passar l'error a un servei de missatges ? */
     console.log('ERROR: ', err)
     return {
