@@ -1,7 +1,6 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, Subject } from "rxjs";
-import { tap } from "rxjs/operators";
 import { API } from '@constants/api.constant';
 import { Activity } from '@models/activity.model';
 

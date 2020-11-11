@@ -6,6 +6,7 @@ import { Action, createReducer, on } from '@ngrx/store';
 const defaultUserState: UserState = {
   user: null,
   loading: false,
+  error: null
 };
 
 const _userReducer = createReducer(defaultUserState,
@@ -14,7 +15,8 @@ const _userReducer = createReducer(defaultUserState,
   on(UserActions.UserSignin, state => {
     return {
       ...state,
-      loading: true
+      loading: true,
+      error: null
     }
   }),
 
@@ -23,17 +25,17 @@ const _userReducer = createReducer(defaultUserState,
     return {
       ...state,
       user: user,
-      loading: false
+      loading: false,
+      error: null
     }
   }),
 
   /* signin error */
   on(UserActions.UserSigninError, (state, { err }) => {
-    /* passar l'error a un servei de missatges ? */
-    console.log('ERROR: ', err)
     return {
       ...state,
-      loading: false
+      loading: false,
+      error: err
     }
   }),
 
@@ -41,7 +43,8 @@ const _userReducer = createReducer(defaultUserState,
   on(UserActions.UserSignout, state => {
     return {
       ...state,
-      loading: true
+      loading: true,
+      error: null
     }
   }),
 
@@ -50,17 +53,17 @@ const _userReducer = createReducer(defaultUserState,
     return {
       ...state,
       user: null,
-      loading: false
+      loading: false,
+      error: null
     }
   }),
 
   /* signout error */
   on(UserActions.UserSignoutError, (state, { err }) => {
-    /* passar l'error a un servei de missatges ? */
-    console.log('ERROR: ', err)
     return {
       ...state,
-      loading: false
+      loading: false,
+      error: err
     }
   }),
 
@@ -68,7 +71,8 @@ const _userReducer = createReducer(defaultUserState,
   on(UserActions.UserUpdatePersonalData, state => {
     return {
       ...state,
-      loading: true
+      loading: true,
+      error: null
     }
   }),
 
@@ -77,17 +81,17 @@ const _userReducer = createReducer(defaultUserState,
     return {
       ...state,
       user: user,
-      loading: false
+      loading: false,
+      error: null
     }
   }),
 
   /* update profile error */
   on(UserActions.UserUpdatePersonalDataError, (state, { err }) => {
-    /* passar l'error a un servei de missatges ? */
-    console.log('ERROR: ', err)
     return {
       ...state,
-      loading: false
+      loading: false,
+      error: err
     }
   }),
 
@@ -95,7 +99,8 @@ const _userReducer = createReducer(defaultUserState,
   on(UserActions.UserCreateLanguage, state => {
     return {
       ...state,
-      loading: true
+      loading: true,
+      error: null
     }
   }),
 
@@ -104,17 +109,17 @@ const _userReducer = createReducer(defaultUserState,
     return {
       ...state,
       user: user,
-      loading: false
+      loading: false,
+      error: null
     }
   }),
 
   /* create language error */
   on(UserActions.UserCreateLanguageError, (state, { err }) => {
-    /* passar l'error a un servei de missatges ? */
-    console.log('ERROR: ', err)
     return {
       ...state,
-      loading: false
+      loading: false,
+      error: err
     }
   }),
 
@@ -122,7 +127,8 @@ const _userReducer = createReducer(defaultUserState,
   on(UserActions.UserUpdateLanguage, state => {
     return {
       ...state,
-      loading: true
+      loading: true,
+      error: null
     }
   }),
 
@@ -131,17 +137,17 @@ const _userReducer = createReducer(defaultUserState,
     return {
       ...state,
       user: user,
-      loading: false
+      loading: false,
+      error: null
     }
   }),
 
   /* update language error */
   on(UserActions.UserUpdateLanguageError, (state, { err }) => {
-    /* passar l'error a un servei de missatges ? */
-    console.log('ERROR: ', err)
     return {
       ...state,
-      loading: false
+      loading: false,
+      error: err
     }
   }),
 
@@ -149,7 +155,8 @@ const _userReducer = createReducer(defaultUserState,
   on(UserActions.UserDeleteLanguage, state => {
     return {
       ...state,
-      loading: true
+      loading: true,
+      error: null
     }
   }),
 
@@ -158,17 +165,17 @@ const _userReducer = createReducer(defaultUserState,
     return {
       ...state,
       user: user,
-      loading: false
+      loading: false,
+      error: null
     }
   }),
 
   /* delete language error */
   on(UserActions.UserDeleteLanguageError, (state, { err }) => {
-    /* passar l'error a un servei de missatges ? */
-    console.log('ERROR: ', err)
     return {
       ...state,
-      loading: false
+      loading: false,
+      error: err
     }
   }),
 
@@ -176,7 +183,8 @@ const _userReducer = createReducer(defaultUserState,
   on(UserActions.UserCreateEducation, state => {
     return {
       ...state,
-      loading: true
+      loading: true,
+      error: null
     }
   }),
 
@@ -185,17 +193,17 @@ const _userReducer = createReducer(defaultUserState,
     return {
       ...state,
       user: user,
-      loading: false
+      loading: false,
+      error: null
     }
   }),
 
   /* create education error */
   on(UserActions.UserCreateEducationError, (state, { err }) => {
-    /* passar l'error a un servei de missatges ? */
-    console.log('ERROR: ', err)
     return {
       ...state,
-      loading: false
+      loading: false,
+      error: err
     }
   }),
 
@@ -203,7 +211,8 @@ const _userReducer = createReducer(defaultUserState,
   on(UserActions.UserUpdateEducation, state => {
     return {
       ...state,
-      loading: true
+      loading: true,
+      error: null
     }
   }),
 
@@ -212,17 +221,17 @@ const _userReducer = createReducer(defaultUserState,
     return {
       ...state,
       user: user,
-      loading: false
+      loading: false,
+      error: null
     }
   }),
 
   /* update education error */
   on(UserActions.UserUpdateEducationError, (state, { err }) => {
-    /* passar l'error a un servei de missatges ? */
-    console.log('ERROR: ', err)
     return {
       ...state,
-      loading: false
+      loading: false,
+      error: err
     }
   }),
 
@@ -230,7 +239,8 @@ const _userReducer = createReducer(defaultUserState,
   on(UserActions.UserDeleteEducation, state => {
     return {
       ...state,
-      loading: true
+      loading: true,
+      error: null
     }
   }),
 
@@ -239,17 +249,17 @@ const _userReducer = createReducer(defaultUserState,
     return {
       ...state,
       user: user,
-      loading: false
+      loading: false,
+      error: null
     }
   }),
 
   /* delete education error */
   on(UserActions.UserDeleteEducationError, (state, { err }) => {
-    /* passar l'error a un servei de missatges ? */
-    console.log('ERROR: ', err)
     return {
       ...state,
-      loading: false
+      loading: false,
+      error: err
     }
   }),
 
@@ -257,7 +267,8 @@ const _userReducer = createReducer(defaultUserState,
   on(UserActions.UserLoadFavoriteActivities, state => {
     return {
       ...state,
-      loading: true
+      loading: true,
+      error: null
     }
   }),
 
@@ -269,17 +280,17 @@ const _userReducer = createReducer(defaultUserState,
         ...state.user,
         favoriteActivities: favoriteActivities
       },
-      loading: false
+      loading: false,
+      error: null
     }
   }),
 
   /* load favorite activities error */
   on(UserActions.UserLoadFavoriteActivitiesError, (state, { err }) => {
-    /* passar l'error a un servei de missatges ? */
-    console.log('ERROR: ', err)
     return {
       ...state,
-      loading: false
+      loading: false,
+      error: err
     }
   }),
 
@@ -287,7 +298,8 @@ const _userReducer = createReducer(defaultUserState,
   on(UserActions.UserToggleFavoriteActivity, state => {
     return {
       ...state,
-      loading: true
+      loading: true,
+      error: null
     }
   }),
 
@@ -299,17 +311,17 @@ const _userReducer = createReducer(defaultUserState,
         ...state.user,
         favoriteActivities: favoriteActivities
       },
-      loading: false
+      loading: false,
+      error: null
     }
   }),
 
   /* toggle favorite activity error */
   on(UserActions.UserToggleFavoriteActivityError, (state, { err }) => {
-    /* passar l'error a un servei de missatges ? */
-    console.log('ERROR: ', err)
     return {
       ...state,
-      loading: false
+      loading: false,
+      error: err
     }
   })
 

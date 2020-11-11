@@ -7,6 +7,7 @@ const defaultAuthState: AuthState = {
   loginInfo: null,
   wrongCredentials: null,
   loading: false,
+  error: null
 };
 
 const _authReducer = createReducer(defaultAuthState,
@@ -15,7 +16,8 @@ const _authReducer = createReducer(defaultAuthState,
   on(AuthActions.AuthLogin, state => {
     return {
       ...state,
-      loading: true
+      loading: true,
+      error: null
     }
   }),
 
@@ -25,19 +27,19 @@ const _authReducer = createReducer(defaultAuthState,
       ...state,
       loginInfo: loginInfo,
       wrongCredentials: false,
-      loading: false
+      loading: false,
+      error: null
     }
   }),
 
   /* login error */
   on(AuthActions.AuthLoginError, (state, { err }) => {
-    /* passar l'error a un servei de missatges ? */
-    console.log('ERROR: ', err)
     return {
       ...state,
       loginInfo: null,
       wrongCredentials: true,
-      loading: false
+      loading: false,
+      error: err
     }
   }),
 
@@ -45,7 +47,8 @@ const _authReducer = createReducer(defaultAuthState,
   on(AuthActions.AuthLogout, state => {
     return {
       ...state,
-      loading: true
+      loading: true,
+      error: null
     }
   }),
 
@@ -55,17 +58,17 @@ const _authReducer = createReducer(defaultAuthState,
       ...state,
       loginInfo: null,
       wrongCredentials: null,
-      loading: false
+      loading: false,
+      error: null
     }
   }),
 
   /* logout error */
   on(AuthActions.AuthLogoutError, (state, { err }) => {
-    /* passar l'error a un servei de missatges ? */
-    console.log('ERROR: ', err)
     return {
       ...state,
-      loading: false
+      loading: false,
+      error: err
     }
   }),
 
@@ -73,7 +76,8 @@ const _authReducer = createReducer(defaultAuthState,
   on(AuthActions.AuthRegister, state => {
     return {
       ...state,
-      loading: true
+      loading: true,
+      error: null
     }
   }),
 
@@ -86,22 +90,21 @@ const _authReducer = createReducer(defaultAuthState,
         password: user.password
       },
       wrongCredentials: false,
-      loading: false
+      loading: false,
+      error: null
     }
   }),
 
   /* register error */
   on(AuthActions.AuthRegisterError, (state, { err }) => {
-    /* passar l'error a un servei de missatges ? */
-    console.log('ERROR: ', err)
     return {
       ...state,
       loginInfo: null,
       wrongCredentials: true,
-      loading: false
+      loading: false,
+      error: err
     }
   }),
-
 
 );
 

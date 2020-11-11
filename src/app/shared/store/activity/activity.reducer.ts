@@ -7,6 +7,7 @@ const defaultActivityState: ActivityState = {
   activities: null,
   activityToShow: null,
   loading: false,
+  error: null
 };
 
 const _activityReducer = createReducer(defaultActivityState,
@@ -15,7 +16,8 @@ const _activityReducer = createReducer(defaultActivityState,
   on(ActivityActions.ActivitiesLoad, state => {
     return {
       ...state,
-      loading: true
+      loading: true,
+      error: null
     }
   }),
 
@@ -24,17 +26,17 @@ const _activityReducer = createReducer(defaultActivityState,
     return {
       ...state,
       activities: activities,
-      loading: false
+      loading: false,
+      error: null
     }
   }),
 
   /* load error */
   on(ActivityActions.ActivitiesLoadError, (state, { err }) => {
-    /* passar l'error a un servei de missatges ? */
-    console.log('ERROR: ', err)
     return {
       ...state,
-      loading: false
+      loading: false,
+      error: err
     }
   }),
 
@@ -42,7 +44,8 @@ const _activityReducer = createReducer(defaultActivityState,
   on(ActivityActions.ActivityCreate, state => {
     return {
       ...state,
-      loading: true
+      loading: true,
+      error: null
     }
   }),
 
@@ -51,17 +54,17 @@ const _activityReducer = createReducer(defaultActivityState,
     return {
       ...state,
       activities: [...state.activities, activity],
-      loading: false
+      loading: false,
+      error: null
     }
   }),
 
   /* create activity error */
   on(ActivityActions.ActivityCreateError, (state, { err }) => {
-    /* passar l'error a un servei de missatges ? */
-    console.log('ERROR: ', err)
     return {
       ...state,
-      loading: false
+      loading: false,
+      error: err
     }
   }),
 
@@ -69,7 +72,8 @@ const _activityReducer = createReducer(defaultActivityState,
   on(ActivityActions.ActivityUpdate, state => {
     return {
       ...state,
-      loading: true
+      loading: true,
+      error: null
     }
   }),
 
@@ -81,17 +85,17 @@ const _activityReducer = createReducer(defaultActivityState,
         if (a.id === activity.id) return activity;
         else return a;
       }),
-      loading: false
+      loading: false,
+      error: null
     }
   }),
 
   /* update activity error */
   on(ActivityActions.ActivityUpdateError, (state, { err }) => {
-    /* passar l'error a un servei de missatges ? */
-    console.log('ERROR: ', err)
     return {
       ...state,
-      loading: false
+      loading: false,
+      error: err
     }
   }),
 
@@ -99,7 +103,8 @@ const _activityReducer = createReducer(defaultActivityState,
   on(ActivityActions.ActivityDelete, state => {
     return {
       ...state,
-      loading: true
+      loading: true,
+      error: null
     }
   }),
 
@@ -108,17 +113,17 @@ const _activityReducer = createReducer(defaultActivityState,
     return {
       ...state,
       activities: state.activities.filter(a => a.id !== activityId),
-      loading: false
+      loading: false,
+      error: null
     }
   }),
 
   /* delete activity error */
   on(ActivityActions.ActivityDeleteError, (state, { err }) => {
-    /* passar l'error a un servei de missatges ? */
-    console.log('ERROR: ', err)
     return {
       ...state,
-      loading: false
+      loading: false,
+      error: err
     }
   }),
 
@@ -126,7 +131,8 @@ const _activityReducer = createReducer(defaultActivityState,
   on(ActivityActions.ActivitySelect, state => {
     return {
       ...state,
-      loading: true
+      loading: true,
+      error: null
     }
   }),
 
@@ -135,17 +141,17 @@ const _activityReducer = createReducer(defaultActivityState,
     return {
       ...state,
       activityToShow: activityId,
-      loading: false
+      loading: false,
+      error: null
     }
   }),
 
   /* select error */
   on(ActivityActions.ActivitySelectError, (state, { err }) => {
-    /* passar l'error a un servei de missatges ? */
-    console.log('ERROR: ', err)
     return {
       ...state,
-      loading: false
+      loading: false,
+      error: err
     }
   }),
 
@@ -153,7 +159,8 @@ const _activityReducer = createReducer(defaultActivityState,
   on(ActivityActions.ActivityDeselect, state => {
     return {
       ...state,
-      loading: true
+      loading: true,
+      error: null
     }
   }),
 
@@ -162,17 +169,17 @@ const _activityReducer = createReducer(defaultActivityState,
     return {
       ...state,
       activityToShow: null,
-      loading: false
+      loading: false,
+      error: null
     }
   }),
 
   /* deselect error */
   on(ActivityActions.ActivityDeselectError, (state, { err }) => {
-    /* passar l'error a un servei de missatges ? */
-    console.log('ERROR: ', err)
     return {
       ...state,
-      loading: false
+      loading: false,
+      error: err
     }
   }),
 
@@ -180,7 +187,8 @@ const _activityReducer = createReducer(defaultActivityState,
   on(ActivityActions.ActivitySignup, state => {
     return {
       ...state,
-      loading: true
+      loading: true,
+      error: null
     }
   }),
 
@@ -192,17 +200,17 @@ const _activityReducer = createReducer(defaultActivityState,
         if (ac.id === activity.id) return activity;
         else return ac;
       }),
-      loading: false
+      loading: false,
+      error: null
     }
   }),
 
   /* signup error */
   on(ActivityActions.ActivitySignupError, (state, { err }) => {
-    /* passar l'error a un servei de missatges ? */
-    console.log('ERROR: ', err)
     return {
       ...state,
-      loading: false
+      loading: false,
+      error: err
     }
   }),
 
@@ -210,7 +218,8 @@ const _activityReducer = createReducer(defaultActivityState,
   on(ActivityActions.ActivitySignout, state => {
     return {
       ...state,
-      loading: true
+      loading: true,
+      error: null
     }
   }),
 
@@ -222,17 +231,17 @@ const _activityReducer = createReducer(defaultActivityState,
         if (ac.id === activity.id) return activity;
         else return ac;
       }),
-      loading: false
+      loading: false,
+      error: null
     }
   }),
 
   /* signout error */
   on(ActivityActions.ActivitySignoutError, (state, { err }) => {
-    /* passar l'error a un servei de missatges ? */
-    console.log('ERROR: ', err)
     return {
       ...state,
-      loading: false
+      loading: false,
+      error: err
     }
   }),
 
