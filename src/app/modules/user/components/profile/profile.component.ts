@@ -8,7 +8,7 @@ import { UserService } from '@services/user.service';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(private us: UserService) { }
+  constructor() { }
 
   ngOnInit(): void {
   }

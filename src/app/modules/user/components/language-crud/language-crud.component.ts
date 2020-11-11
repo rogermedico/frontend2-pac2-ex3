@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { LANGUAGES, LANGUAGE_LEVELS } from '@constants/language.constant';
 import { Language } from '@models/language.model';
 import { AppStore } from '@models/store.model';
 import { User } from '@models/user.model';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import * as UserSelectors from '@store/user/user.selector';
 import * as UserActions from '@store/user/user.action';
+import * as RouterSelectors from '@store/router/router.selector';
 import { take } from 'rxjs/operators';
 
 @Component({
@@ -19,8 +20,10 @@ import { take } from 'rxjs/operators';
 export class LanguageCrudComponent implements OnInit {
 
   public title: String;
-  public languages$: Observable<Language[]> = this.store$.select(UserSelectors.selectLanguages);
   public userLoggedIn$: Observable<User> = this.store$.select(UserSelectors.selectUser);
+  public userSubscription: Subscription;
+  public RouteParams$: Observable<Params> = this.store$.select(RouterSelectors.selectParams);
+  public routeParamsSubscription: Subscription;
   public language: Language = {
     name: null,
     level: null,
@@ -35,10 +38,12 @@ export class LanguageCrudComponent implements OnInit {
   constructor(private store$: Store<AppStore>, private fb: FormBuilder, private activatedRoute: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
-    this.languageIndex = parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
-    this.languageIndex = Number.isNaN(this.languageIndex) ? null : this.languageIndex;
 
-    this.userLoggedIn$.subscribe(u => {
+    this.routeParamsSubscription = this.RouteParams$.subscribe(p => this.languageIndex = p.id);
+    // this.languageIndex = parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
+    // this.languageIndex = Number.isNaN(this.languageIndex) ? null : this.languageIndex;
+
+    this.userSubscription = this.userLoggedIn$.subscribe(u => {
       if ((this.languageIndex != null) && (this.languageIndex >= 0) && (this.languageIndex < u.languages.length)) {
         this.title = 'Edit language';
         this.buttonTag = 'Update language';
@@ -52,6 +57,11 @@ export class LanguageCrudComponent implements OnInit {
       this.createForm(this.language);
 
     });
+  }
+
+  ngOnDestroy(): void {
+    this.userSubscription.unsubscribe();
+    this.routeParamsSubscription.unsubscribe();
   }
 
   createForm(lang: Language) {

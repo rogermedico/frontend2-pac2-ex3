@@ -1,7 +1,7 @@
 <div>
   <h2 class="section-title">{{title}}</h2>
   <div class="form-group">
-    <form *ngIf="user" [formGroup]="activityForm" (ngSubmit)="handleActivityForm()">
+    <form [formGroup]="activityForm" (ngSubmit)="handleActivityForm()">
       <div class="input-container">
         <input class="input" type="text" placeholder="Name" name="name" formControlName="name">
         <div class="error" *ngIf="name.invalid && name.dirty && name.value ===''">

@@ -24,6 +24,7 @@ import { HeaderComponent } from '@views/header/header.component';
 import { FooterComponent } from '@views/footer/footer.component';
 
 import { ActivitiesModule } from './modules/activities/activities.module';
+import { CustomSerializer } from '@store/router/custom-router-serializer';
 
 
 @NgModule({
@@ -48,7 +49,10 @@ import { ActivitiesModule } from './modules/activities/activities.module';
     EffectsModule.forRoot(effects),
 
     /* router in state */
-    // StoreRouterConnectingModule.forRoot({ stateKey: 'router' }),
+    StoreRouterConnectingModule.forRoot({
+      stateKey: 'router',
+      serializer: CustomSerializer
+    }),
     StoreDevtoolsModule.instrument(),
   ],
   providers: [],

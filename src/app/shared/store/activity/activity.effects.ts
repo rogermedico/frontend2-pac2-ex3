@@ -54,7 +54,6 @@ export class ActivityEffects {
     ofType(ActivityActions.ActivityActionTypes.ACTIVITY_UPDATE),
     mergeMap((action: { type: string, activity: Activity }) => {
       return this.as.updateActivity(action.activity).pipe(
-        tap(a => console.log(a)),
         map(() => {
           return { type: ActivityActions.ActivityActionTypes.ACTIVITY_UPDATE_SUCCESS, activity: action.activity }
         }),

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { CATEGORY_TYPES } from '@constants/category-types.constant';
 import { LANGUAGES } from '@constants/language.constant';
 import { SUBCATEGORY_TYPES_BEACH, SUBCATEGORY_TYPES_CULTURE, SUBCATEGORY_TYPES_ENOTURISME } from '@constants/subcategory-types.constant';
@@ -11,9 +11,10 @@ import { Store } from '@ngrx/store';
 import { ActivitiesService } from '@services/activities.service';
 import { UserService } from '@services/user.service';
 import { maxCapacityValidator } from '@validators/max-capacity.validator';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import * as UserSelectors from '@store/user/user.selector';
 import * as ActivitySelectors from '@store/activity/activity.selector';
+import * as RouterSelectors from '@store/router/router.selector';
 import * as ActivityActions from '@store/activity/activity.action';
 import { ACTIVITY_STATUS } from '@constants/activity-status.constant';
 import { map, skipWhile } from 'rxjs/operators';
@@ -23,13 +24,17 @@ import { map, skipWhile } from 'rxjs/operators';
   templateUrl: './admin-activities-crud.component.html',
   styleUrls: ['./admin-activities-crud.component.css']
 })
-export class AdminActivitiesCrudComponent implements OnInit {
+export class AdminActivitiesCrudComponent implements OnInit, OnDestroy {
 
 
   public title: String;
   public user: User;
   public userLoggedIn$: Observable<User> = this.store$.select(UserSelectors.selectUser);
+  public userSubscription: Subscription;
+  public RouteParams$: Observable<Params> = this.store$.select(RouterSelectors.selectParams);
+  public routeParamsSubscription: Subscription;
   public activities$: Observable<Activity[]> = this.store$.select(ActivitySelectors.selectActivities);
+  public activitiesSubscription: Subscription;
   public activity: Activity = {
     name: null,
     category: null,
@@ -57,14 +62,16 @@ export class AdminActivitiesCrudComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.userLoggedIn$.subscribe(userLoggedIn => this.user = userLoggedIn);
-    this.activityIndex = parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
-    this.activityIndex = Number.isNaN(this.activityIndex) ? null : this.activityIndex;
+    this.userSubscription = this.userLoggedIn$.subscribe(userLoggedIn => this.user = userLoggedIn);
 
-    this.activities$.pipe(
+    this.routeParamsSubscription = this.RouteParams$.subscribe(p => this.activityIndex = p.id);
+    // this.activityIndex = parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
+    // this.activityIndex = Number.isNaN(this.activityIndex) ? null : this.activityIndex;
+
+    this.activitiesSubscription = this.activities$.pipe(
       map(activities => {
         if (this.user && this.activityIndex != null) {
-          this.activity = activities.find((ac) => ac.id === this.activityIndex);
+          this.activity = activities.find((ac) => ac.id == this.activityIndex);
           this.title = 'Edit activity';
           this.buttonTag = 'Update activity';
         }
@@ -73,24 +80,32 @@ export class AdminActivitiesCrudComponent implements OnInit {
           this.buttonTag = 'Create activity';
         }
 
+        this.createForm(this.activity);
+
       })
     ).subscribe();
 
-    this.createForm();
+
   }
 
-  createForm() {
+  ngOnDestroy(): void {
+    this.userSubscription.unsubscribe();
+    this.routeParamsSubscription.unsubscribe();
+    this.activitiesSubscription.unsubscribe();
+  }
+
+  createForm(ac: Activity) {
     this.activityForm = this.fb.group({
-      name: [this.activity.name ? this.activity.name : null, [Validators.required, Validators.minLength(3), Validators.maxLength(55)]],
-      category: [this.activity.category ? this.activity.category : null, [Validators.required]],
-      subcategory: [{ value: (this.activity.subcategory ? this.activity.subcategory : null), disabled: !this.activity.category }, [Validators.required]],
-      description: [this.activity.description ? this.activity.description : null],
-      language: [this.activity.language ? this.activity.language : null, [Validators.required]],
-      date: [this.activity.date ? this.activity.date : null, [Validators.pattern('^(0[1-9]|[12][0-9]|3[01])[/](0[1-9]|1[012])[/]\\d{4}$')]],
-      price: [this.activity.price ? this.activity.price : null, [Validators.required, Validators.pattern('^[1-9]\\d*$')]],
-      miniumCapacity: [this.activity.miniumCapacity ? this.activity.miniumCapacity : null, [Validators.required, Validators.pattern('^[1-9]\\d*$')]],
-      maxCapacity: [this.activity.maxCapacity ? this.activity.maxCapacity : null, [Validators.required, Validators.pattern('^[1-9]\\d*$')]],
-      state: [this.activity.state ? this.activity.state : null, [Validators.required]]
+      name: [ac.name ? ac.name : null, [Validators.required, Validators.minLength(3), Validators.maxLength(55)]],
+      category: [ac.category ? ac.category : null, [Validators.required]],
+      subcategory: [{ value: (ac.subcategory ? ac.subcategory : null), disabled: !ac.category }, [Validators.required]],
+      description: [ac.description ? ac.description : null],
+      language: [ac.language ? ac.language : null, [Validators.required]],
+      date: [ac.date ? ac.date : null, [Validators.pattern('^(0[1-9]|[12][0-9]|3[01])[/](0[1-9]|1[012])[/]\\d{4}$')]],
+      price: [ac.price ? ac.price : null, [Validators.required, Validators.pattern('^[1-9]\\d*$')]],
+      miniumCapacity: [ac.miniumCapacity ? ac.miniumCapacity : null, [Validators.required, Validators.pattern('^[1-9]\\d*$')]],
+      maxCapacity: [ac.maxCapacity ? ac.maxCapacity : null, [Validators.required, Validators.pattern('^[1-9]\\d*$')]],
+      state: [ac.state ? ac.state : null, [Validators.required]]
     },
       {
         validators: maxCapacityValidator
