@@ -44,16 +44,19 @@ export class AuthEffects {
     ))
   ));
 
-  // /* register */
-  // register$ = createEffect(() => this.actions$.pipe(
-  //   ofType(UserActions.UserActionTypes.USER_REGISTER),
-  //   mergeMap((action: { type: string, user: User }) => this.us.register(action.user).pipe(
-  //     map(user => {
-  //       return { type: UserActions.UserActionTypes.USER_REGISTER_SUCCESS, user: user }
-  //     }),
-  //     catchError(err => of({ type: UserActions.UserActionTypes.USER_REGISTER_ERROR, err: err }))
-  //   ))
-  // ));
+  /* register */
+  register$ = createEffect(() => this.actions$.pipe(
+    ofType(AuthActions.AuthActionTypes.AUTH_REGISTER),
+    mergeMap((action: { type: string, user: User }) => this.us.register(action.user).pipe(
+      mergeMap(user => {
+        return [
+          { type: AuthActions.AuthActionTypes.AUTH_REGISTER_SUCCESS, user: user },
+          { type: UserActions.UserActionTypes.USER_SIGNIN, user: user }
+        ]
+      }),
+      catchError(err => of({ type: AuthActions.AuthActionTypes.AUTH_REGISTER_ERROR, err: err }))
+    ))
+  ));
 
 
 }

@@ -64,34 +64,6 @@ const _userReducer = createReducer(defaultUserState,
     }
   }),
 
-  /* register */
-  on(UserActions.UserRegister, state => {
-    return {
-      ...state,
-      loading: true
-    }
-  }),
-
-  /* register success */
-  on(UserActions.UserRegisterSuccess, (state, { user }) => {
-    console.log('reducer register', user)
-    return {
-      ...state,
-      user: user,
-      loading: false
-    }
-  }),
-
-  /* register error */
-  on(UserActions.UserRegisterError, (state, { err }) => {
-    /* passar l'error a un servei de missatges ? */
-    console.log('ERROR: ', err)
-    return {
-      ...state,
-      loading: false
-    }
-  }),
-
   /* update profile */
   on(UserActions.UserUpdatePersonalData, state => {
     return {

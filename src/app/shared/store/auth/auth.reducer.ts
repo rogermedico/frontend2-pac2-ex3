@@ -69,33 +69,38 @@ const _authReducer = createReducer(defaultAuthState,
     }
   }),
 
-  // /* register */
-  // on(AuthActions.UserRegister, state => {
-  //   return {
-  //     ...state,
-  //     loading: true
-  //   }
-  // }),
+  /* register */
+  on(AuthActions.AuthRegister, state => {
+    return {
+      ...state,
+      loading: true
+    }
+  }),
 
-  // /* register success */
-  // on(AuthActions.UserRegisterSuccess, (state, { user }) => {
-  //   console.log('reducer register', user)
-  //   return {
-  //     ...state,
-  //     user: user,
-  //     loading: false
-  //   }
-  // }),
+  /* register success */
+  on(AuthActions.AuthRegisterSuccess, (state, { user }) => {
+    return {
+      ...state,
+      loginInfo: {
+        username: user.email,
+        password: user.password
+      },
+      wrongCredentials: false,
+      loading: false
+    }
+  }),
 
-  // /* register error */
-  // on(AuthActions.UserRegisterError, (state, { err }) => {
-  //   /* passar l'error a un servei de missatges ? */
-  //   console.log('ERROR: ', err)
-  //   return {
-  //     ...state,
-  //     loading: false
-  //   }
-  // }),
+  /* register error */
+  on(AuthActions.AuthRegisterError, (state, { err }) => {
+    /* passar l'error a un servei de missatges ? */
+    console.log('ERROR: ', err)
+    return {
+      ...state,
+      loginInfo: null,
+      wrongCredentials: true,
+      loading: false
+    }
+  }),
 
 
 );

@@ -43,17 +43,6 @@ export class UserEffects {
     catchError(err => of({ type: UserActions.UserActionTypes.USER_SIGNOUT_ERROR, err: err }))
   ));
 
-  /* register */
-  register$ = createEffect(() => this.actions$.pipe(
-    ofType(UserActions.UserActionTypes.USER_REGISTER),
-    mergeMap((action: { type: string, user: User }) => this.us.register(action.user).pipe(
-      map(user => {
-        return { type: UserActions.UserActionTypes.USER_REGISTER_SUCCESS, user: user }
-      }),
-      catchError(err => of({ type: UserActions.UserActionTypes.USER_REGISTER_ERROR, err: err }))
-    ))
-  ));
-
   /* update personal data */
   updatePersonalData$ = createEffect(() => this.actions$.pipe(
     ofType(UserActions.UserActionTypes.USER_UPDATE_PERSONAL_DATA),

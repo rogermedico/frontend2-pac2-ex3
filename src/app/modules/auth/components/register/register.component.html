@@ -78,7 +78,7 @@
         </div>
       </div>
       <div>
-        <div class="error-form" *ngIf="wrongEmail">
+        <div class="error-form" *ngIf="(authState$ | async).wrongCredentials">
           This email is already in use, choose another one
         </div>
         <button class="register-button" type="submit"

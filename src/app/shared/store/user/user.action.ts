@@ -5,17 +5,17 @@ import { Language } from '@models/language.model';
 import { Education } from '@models/education.model';
 
 export enum UserActionTypes {
-  USER_SIGNIN = '[User/Auth] USER_SIGNIN',
-  USER_SIGNIN_SUCCESS = '[User/Auth] USER_SIGNIN_SUCCESS',
-  USER_SIGNIN_ERROR = '[User/Auth] USER_SIGNIN_ERROR',
+  USER_SIGNIN = '[User] USER_SIGNIN',
+  USER_SIGNIN_SUCCESS = '[User] USER_SIGNIN_SUCCESS',
+  USER_SIGNIN_ERROR = '[User] USER_SIGNIN_ERROR',
 
-  USER_SIGNOUT = '[User/Auth] USER_SIGNOUT',
-  USER_SIGNOUT_SUCCESS = '[User/Auth] USER_SIGNOUT_SUCCESS',
-  USER_SIGNOUT_ERROR = '[User/Auth] USER_SIGNOUT_ERROR',
+  USER_SIGNOUT = '[User] USER_SIGNOUT',
+  USER_SIGNOUT_SUCCESS = '[User] USER_SIGNOUT_SUCCESS',
+  USER_SIGNOUT_ERROR = '[User] USER_SIGNOUT_ERROR',
 
-  USER_REGISTER = '[User/Auth] USER_REGISTER',
-  USER_REGISTER_SUCCESS = '[User/Auth] USER_REGISTER_SUCCESS',
-  USER_REGISTER_ERROR = '[User/Auth] USER_REGISTER_ERROR',
+  // USER_REGISTER = '[User] USER_REGISTER',
+  // USER_REGISTER_SUCCESS = '[User] USER_REGISTER_SUCCESS',
+  // USER_REGISTER_ERROR = '[User] USER_REGISTER_ERROR',
 
   USER_UPDATE_PERSONAL_DATA = '[User/Profile] USER_UPDATE_PERSONAL_DATA',
   USER_UPDATE_PERSONAL_DATA_SUCCESS = '[User/Profile] USER_UPDATE_PERSONAL_DATA_SUCCESS',
@@ -63,11 +63,6 @@ export const UserSigninError = createAction(UserActionTypes.USER_SIGNIN_ERROR, p
 export const UserSignout = createAction(UserActionTypes.USER_SIGNOUT);
 export const UserSignoutSuccess = createAction(UserActionTypes.USER_SIGNOUT_SUCCESS);
 export const UserSignoutError = createAction(UserActionTypes.USER_SIGNOUT_ERROR, props<{ err: String }>());
-
-/* auth register */
-export const UserRegister = createAction(UserActionTypes.USER_REGISTER, props<{ user: User }>());
-export const UserRegisterSuccess = createAction(UserActionTypes.USER_REGISTER_SUCCESS, props<{ user: User }>());
-export const UserRegisterError = createAction(UserActionTypes.USER_REGISTER_ERROR, props<{ err: String }>());
 
 /* user update profile */
 export const UserUpdatePersonalData = createAction(UserActionTypes.USER_UPDATE_PERSONAL_DATA, props<{ user: User }>());

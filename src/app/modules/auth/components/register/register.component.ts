@@ -1,28 +1,43 @@
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Router } from '@angular/router';
 import { USER_TYPES } from '@constants/user-types.constant';
 import { User } from "@models/user.model";
 import { Store } from '@ngrx/store';
 import { AppStore } from '@models/store.model';
-import * as UserActions from '@store/user/user.action';
+import * as AuthActions from '@store/auth/auth.action';
+import * as AuthSelectors from '@store/auth/auth.selector';
+import { Observable, Subscription } from 'rxjs';
+import { AuthState } from '@store/auth/auth.state';
+import { map, skipWhile } from 'rxjs/operators';
 
 @Component({
   selector: "app-register",
   templateUrl: "./register.component.html",
   styleUrls: ["./register.component.css"],
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
 
   public userTypes = Object.values(USER_TYPES);
   public title: string = 'Register';
-  public wrongEmail: Boolean = false;
   public registerForm: FormGroup;
+  public authState$: Observable<AuthState> = this.store$.select(AuthSelectors.selectAuthState);
+  private authStateSubscription: Subscription;
 
   constructor(private store$: Store<AppStore>, private fb: FormBuilder, private router: Router) { }
 
   ngOnInit(): void {
     this.createForm();
+    this.authStateSubscription = this.authState$.pipe(
+      skipWhile(as => as.loading === true),
+      map(as => {
+        if (as.wrongCredentials == false && !as.loading) this.router.navigate(['']);
+      })
+    ).subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.authStateSubscription.unsubscribe();
   }
 
   createForm() {
@@ -49,33 +64,21 @@ export class RegisterComponent implements OnInit {
       languages: []
     }
 
-    this.store$.dispatch(UserActions.UserRegister({ user: newUser }));
-    this.router.navigate(['']);
+    this.store$.dispatch(AuthActions.AuthRegister({ user: newUser }));
+    // this.router.navigate(['']);
 
   }
 
-  get name() {
-    return this.registerForm.get('name');
-  }
+  get name() { return this.registerForm.get('name'); }
 
-  get surname() {
-    return this.registerForm.get('surname');
-  }
+  get surname() { return this.registerForm.get('surname'); }
 
-  get type() {
-    return this.registerForm.get('type');
-  }
+  get type() { return this.registerForm.get('type'); }
 
-  get email() {
-    return this.registerForm.get('email');
-  }
+  get email() { return this.registerForm.get('email'); }
 
-  get password() {
-    return this.registerForm.get('password');
-  }
+  get password() { return this.registerForm.get('password'); }
 
-  get repeatPassword() {
-    return this.registerForm.get('repeatPassword');
-  }
+  get repeatPassword() { return this.registerForm.get('repeatPassword'); }
 
 }
