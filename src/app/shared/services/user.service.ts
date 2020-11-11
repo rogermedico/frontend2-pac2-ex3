@@ -16,9 +16,9 @@ export class UserService {
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
-  private userLoggedInRefreshed$ = new Subject<void>();
+  // private userLoggedInRefreshed$ = new Subject<void>();
   private profileDataSavedVar: boolean = true;
-  private userLoggedInVar: User;
+  // private userLoggedInVar: User;
 
   constructor(private http: HttpClient, private as: ActivitiesService, private ms: MessageService) { }
 
@@ -46,7 +46,6 @@ export class UserService {
     return this.getUserByEmail(loginInfo.username).pipe(
       flatMap(user => {
         if (user && (user.password === loginInfo.password)) {
-          /* el loggedIn de user potser s'ha d'eliminar */
           user = { ...user, loggedIn: true };
           this.http.put<User>(API.users, user, this.httpOptions);
           return of(user);
@@ -56,24 +55,23 @@ export class UserService {
         }
       }),
       /* aixo ha d'anar fora d'aqui */
-      tap(user => {
-        this.userLoggedInVar = user;
-        this.as.getActivities().subscribe();
-        this.userLoggedInRefreshed$.next();
-      })
+      // tap(user => {
+      //   this.userLoggedInVar = user;
+      //   this.as.getActivities().subscribe();
+      //   this.userLoggedInRefreshed$.next();
+      // })
       /****************************** */
     )
   }
 
   logout(user: User): Observable<any> {
-    /* el loggedIn de user potser s'ha d'eliminar */
     user = { ...user, loggedIn: false };
     return this.http.put(API.users, user, this.httpOptions).pipe(
       /* aixo ha d'anar fora d'aqui */
-      tap(() => {
-        this.userLoggedInVar = undefined;
-        this.userLoggedInRefreshed$.next();
-      }),
+      // tap(() => {
+      //   this.userLoggedInVar = undefined;
+      //   this.userLoggedInRefreshed$.next();
+      // }),
       /******************************** */
 
     );
@@ -84,8 +82,8 @@ export class UserService {
       flatMap(u => {
         if (!u) {
           /* aixo ha d'anar fora d'aqui */
-          this.userLoggedInVar = user;
-          this.userLoggedInRefreshed$.next();
+          // this.userLoggedInVar = user;
+          // this.userLoggedInRefreshed$.next();
           /***************************** */
           return this.http.post<User>(API.users, user, this.httpOptions)
         }
@@ -99,16 +97,16 @@ export class UserService {
   }
 
   updateUser(user: User): Observable<any> {
-    this.userLoggedInVar = user;
+    // this.userLoggedInVar = user;
     return this.http.put(API.users, user, this.httpOptions).pipe(
       // tap(() => this.refreshUserService$.next())
       tap(() => this.profileDataSaved = true)
     );
   }
 
-  userLoggedInRefreshed(): Observable<void> {
-    return this.userLoggedInRefreshed$;
-  }
+  // userLoggedInRefreshed(): Observable<void> {
+  //   return this.userLoggedInRefreshed$;
+  // }
 
   set profileDataSaved(saved: boolean) {
     this.profileDataSavedVar = saved;
@@ -118,8 +116,8 @@ export class UserService {
     return this.profileDataSavedVar;
   }
 
-  get userLoggedIn() {
-    return this.userLoggedInVar;
-  }
+  // get userLoggedIn() {
+  //   return this.userLoggedInVar;
+  // }
 
 }

@@ -7,9 +7,10 @@ import { Store } from '@ngrx/store';
 import { nifValidator } from '@validators/nif.validator';
 import { Observable } from 'rxjs';
 import * as UserSelectors from '@store/user/user.selector';
-import { take } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 import { USER_TYPES } from '@constants/user-types.constant';
 import * as UserActions from '@store/user/user.action';
+import { UserService } from '@services/user.service';
 
 
 @Component({
@@ -28,13 +29,18 @@ export class PersonalDataComponent implements OnInit {
   public profileSaved: Boolean = false;
   public profileForm: FormGroup;
 
-  constructor(private store$: Store<AppStore>, private fb: FormBuilder) { }
+  constructor(private store$: Store<AppStore>, private fb: FormBuilder, private us: UserService) { }
 
   ngOnInit(): void {
 
     this.userLoggedIn$.pipe(
-      take(1)
-    ).subscribe(user => this.createForm(user));
+      take(1),
+      tap(user => this.createForm(user))
+    ).subscribe();
+
+    this.profileForm.valueChanges.subscribe(
+      () => this.us.profileDataSaved = false
+    );
 
   }
 
@@ -81,6 +87,7 @@ export class PersonalDataComponent implements OnInit {
           user.cif = this.cif.value;
         }
 
+        this.us.profileDataSaved = true;
         this.store$.dispatch(UserActions.UserUpdatePersonalData({ user: user }));
       }
     })

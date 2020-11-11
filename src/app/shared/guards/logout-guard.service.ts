@@ -1,15 +1,27 @@
 import { CanActivate, Router } from "@angular/router";
 import { Injectable } from "@angular/core";
 import { Observable } from 'rxjs';
-import { UserService } from "@services/user.service";
+import { AuthState } from '@store/auth/auth.state';
+import * as AuthSelectors from '@store/auth/auth.selector';
+import { Store } from '@ngrx/store';
+import { AppStore } from '@models/store.model';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: "root",
 })
 export class LogoutGuardService implements CanActivate {
-  constructor(private userService: UserService) { }
+
+  public authState$: Observable<AuthState> = this.store$.select(AuthSelectors.selectAuthState);
+
+  constructor(private store$: Store<AppStore>) { }
 
   canActivate(): boolean | Observable<boolean> | Promise<boolean> {
-    return this.userService.userLoggedIn !== undefined ? true : false
+    return this.authState$.pipe(
+      map(as => {
+        if (as.loginInfo !== null) return true;
+        else return false;
+      })
+    );
   }
 }

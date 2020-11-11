@@ -23,6 +23,7 @@
       "@models/*": ["app/shared/models/*"],
       "@services/*": ["app/shared/services/*"],
       "@validators/*": ["app/shared/validators/*"],
+      "@mock/*": ["app/shared/mock/*"],
       "@store/*": ["app/shared/store/*"],
       "@modules/*": ["app/modules/*"]
     }
