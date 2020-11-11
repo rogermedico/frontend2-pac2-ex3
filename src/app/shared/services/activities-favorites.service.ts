@@ -10,7 +10,9 @@ export class ActivitiesFavoritesService {
   constructor() { }
 
   loadFavorites(user: User): Observable<number[]> {
-    return of(JSON.parse(localStorage.getItem(user.email)));
+    const favoriteActivities = JSON.parse(localStorage.getItem(user.email));
+    if (favoriteActivities == null) return of([]);
+    else return of(favoriteActivities);
   }
 
   toggleFavorite(user: User, activityId: number): Observable<number[]> {
