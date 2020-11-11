@@ -22,6 +22,10 @@ export enum ActivityActionTypes {
   ACTIVITY_SELECT_SUCCESS = '[Activity] ACTIVITY_SELECT_SUCCESS',
   ACTIVITY_SELECT_ERROR = '[Activity] ACTIVITY_SELECT_ERROR',
 
+  ACTIVITY_DESELECT = '[Activity] ACTIVITY_DESELECT',
+  ACTIVITY_DESELECT_SUCCESS = '[Activity] ACTIVITY_DESELECT_SUCCESS',
+  ACTIVITY_DESELECT_ERROR = '[Activity] ACTIVITY_DESELECT_ERROR',
+
   ACTIVITY_SIGNUP = '[Activity] ACTIVIYT_SIGNUP',
   ACTIVITY_SIGNUP_SUCCESS = '[Activity] ACTIVIYT_SIGNUP_SUCCESS',
   ACTIVITY_SIGNUP_ERROR = '[Activity] ACTIVIYT_SIGNUP_ERROR',
@@ -55,6 +59,11 @@ export const ActivityDeleteError = createAction(ActivityActionTypes.ACTIVITY_DEL
 export const ActivitySelect = createAction(ActivityActionTypes.ACTIVITY_SELECT, props<{ activityId: number }>());
 export const ActivitySelectSuccess = createAction(ActivityActionTypes.ACTIVITY_SELECT_SUCCESS, props<{ activityId: number }>());
 export const ActivitySelectError = createAction(ActivityActionTypes.ACTIVITY_SELECT_ERROR, props<{ err: String }>());
+
+/* deselect activity */
+export const ActivityDeselect = createAction(ActivityActionTypes.ACTIVITY_DESELECT);
+export const ActivityDeselectSuccess = createAction(ActivityActionTypes.ACTIVITY_DESELECT_SUCCESS);
+export const ActivityDeselectError = createAction(ActivityActionTypes.ACTIVITY_DESELECT_ERROR, props<{ err: String }>());
 
 /* signup activity */
 export const ActivitySignup = createAction(ActivityActionTypes.ACTIVITY_SIGNUP, props<{ activity: Activity, userId: number }>());

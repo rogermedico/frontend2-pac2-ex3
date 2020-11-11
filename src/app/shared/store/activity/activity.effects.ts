@@ -22,15 +22,6 @@ export class ActivityEffects {
     ))
   ));
 
-  /* select */
-  select$ = createEffect(() => this.actions$.pipe(
-    ofType(ActivityActions.ActivityActionTypes.ACTIVITY_SELECT),
-    map((action: { type: string, activityId: number }) => {
-      return { type: ActivityActions.ActivityActionTypes.ACTIVITY_SELECT_SUCCESS, activityId: action.activityId }
-    }),
-    catchError(err => of({ type: ActivityActions.ActivityActionTypes.ACTIVITY_SELECT_ERROR, err: err }))
-  ));
-
   /* create activity */
   createActivity$ = createEffect(() => this.actions$.pipe(
     ofType(ActivityActions.ActivityActionTypes.ACTIVITY_CREATE),
@@ -68,6 +59,24 @@ export class ActivityEffects {
         catchError(err => of({ type: ActivityActions.ActivityActionTypes.ACTIVITY_DELETE_ERROR, err: err }))
       )
     })
+  ));
+
+  /* select */
+  select$ = createEffect(() => this.actions$.pipe(
+    ofType(ActivityActions.ActivityActionTypes.ACTIVITY_SELECT),
+    map((action: { type: string, activityId: number }) => {
+      return { type: ActivityActions.ActivityActionTypes.ACTIVITY_SELECT_SUCCESS, activityId: action.activityId }
+    }),
+    catchError(err => of({ type: ActivityActions.ActivityActionTypes.ACTIVITY_SELECT_ERROR, err: err }))
+  ));
+
+  /* deselect */
+  deselect$ = createEffect(() => this.actions$.pipe(
+    ofType(ActivityActions.ActivityActionTypes.ACTIVITY_DESELECT),
+    map(() => {
+      return { type: ActivityActions.ActivityActionTypes.ACTIVITY_DESELECT_SUCCESS }
+    }),
+    catchError(err => of({ type: ActivityActions.ActivityActionTypes.ACTIVITY_DESELECT_ERROR, err: err }))
   ));
 
   /* signup */

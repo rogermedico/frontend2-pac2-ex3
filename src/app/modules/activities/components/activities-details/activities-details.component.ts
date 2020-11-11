@@ -48,6 +48,7 @@ export class ActivitiesDetailsComponent implements OnInit, OnDestroy {
 
     this.activityStateSubscription = this.activityState$.pipe(
       skipWhile(activityState => activityState.loading === true),
+      skipWhile(activityState => activityState.activities == null),
       map(activityState => {
         const activity = activityState.activities.find(ac => ac.id === activityState.activityToShow);
         if (activity) {

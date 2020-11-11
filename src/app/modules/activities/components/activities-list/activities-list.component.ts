@@ -29,6 +29,8 @@ export class ActivitiesListComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.store$.dispatch(ActivityActions.ActivityDeselect());
+
     this.userSubscription = this.userLoggedIn$.subscribe(userLoggedIn => this.user = userLoggedIn);
     this.activitiesSubscription = this.activities$.subscribe(activities => {
       if (this.router.url === '/favorites') {

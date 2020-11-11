@@ -149,6 +149,33 @@ const _activityReducer = createReducer(defaultActivityState,
     }
   }),
 
+  /* deselect */
+  on(ActivityActions.ActivityDeselect, state => {
+    return {
+      ...state,
+      loading: true
+    }
+  }),
+
+  /* deselect success */
+  on(ActivityActions.ActivityDeselectSuccess, state => {
+    return {
+      ...state,
+      activityToShow: null,
+      loading: false
+    }
+  }),
+
+  /* deselect error */
+  on(ActivityActions.ActivityDeselectError, (state, { err }) => {
+    /* passar l'error a un servei de missatges ? */
+    console.log('ERROR: ', err)
+    return {
+      ...state,
+      loading: false
+    }
+  }),
+
   /* signup */
   on(ActivityActions.ActivitySignup, state => {
     return {
