@@ -5,7 +5,6 @@ import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import * as UserActions from './user.action';
 import { UserService } from '@services/user.service';
 import { User } from '@models/user.model';
-import { Login } from '@models/login.model';
 import { Language } from '@models/language.model';
 import { Education } from '@models/education.model';
 import { ActivitiesFavoritesService } from '@services/activities-favorites.service';

@@ -1,12 +1,11 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, of, Subject } from "rxjs";
-import { catchError, flatMap, map, mergeMap, switchMap, tap } from "rxjs/operators";
+import { map, mergeMap, tap } from "rxjs/operators";
 import { User } from '@models/user.model';
 import { API } from '@constants/api.constant';
 import { ActivitiesService } from '@services/activities.service';
 import { Login } from '@models/login.model';
-import { MessageService } from '@services/message.service';
 
 @Injectable({
   providedIn: "root",
@@ -16,11 +15,10 @@ export class UserService {
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
-  // private userLoggedInRefreshed$ = new Subject<void>();
-  private profileDataSavedVar: boolean = true;
-  // private userLoggedInVar: User;
 
-  constructor(private http: HttpClient, private as: ActivitiesService, private ms: MessageService) { }
+  private profileDataSavedVar: boolean = true;
+
+  constructor(private http: HttpClient, private as: ActivitiesService) { }
 
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(API.users);
@@ -36,15 +34,9 @@ export class UserService {
     );
   }
 
-  // getUserLoggedIn(): Observable<User> {
-  //   return this.http.get<User>(`${API.users}/?loggedIn=true`).pipe(
-  //     map(user => user[0])
-  //   );
-  // }
-
   login(loginInfo: Login): Observable<User> {
     return this.getUserByEmail(loginInfo.username).pipe(
-      flatMap(user => {
+      mergeMap(user => {
         if (user && (user.password === loginInfo.password)) {
           user = { ...user, loggedIn: true };
           this.http.put<User>(API.users, user, this.httpOptions);
@@ -54,37 +46,18 @@ export class UserService {
           throw 'login error';
         }
       }),
-      /* aixo ha d'anar fora d'aqui */
-      // tap(user => {
-      //   this.userLoggedInVar = user;
-      //   this.as.getActivities().subscribe();
-      //   this.userLoggedInRefreshed$.next();
-      // })
-      /****************************** */
     )
   }
 
   logout(user: User): Observable<any> {
     user = { ...user, loggedIn: false };
-    return this.http.put(API.users, user, this.httpOptions).pipe(
-      /* aixo ha d'anar fora d'aqui */
-      // tap(() => {
-      //   this.userLoggedInVar = undefined;
-      //   this.userLoggedInRefreshed$.next();
-      // }),
-      /******************************** */
-
-    );
+    return this.http.put(API.users, user, this.httpOptions);
   }
 
   register(user: User): Observable<User> {
     return this.getUserByEmail(user.email).pipe(
-      flatMap(u => {
+      mergeMap(u => {
         if (!u) {
-          /* aixo ha d'anar fora d'aqui */
-          // this.userLoggedInVar = user;
-          // this.userLoggedInRefreshed$.next();
-          /***************************** */
           return this.http.post<User>(API.users, user, this.httpOptions)
         }
         else {
@@ -97,16 +70,10 @@ export class UserService {
   }
 
   updateUser(user: User): Observable<any> {
-    // this.userLoggedInVar = user;
     return this.http.put(API.users, user, this.httpOptions).pipe(
-      // tap(() => this.refreshUserService$.next())
       tap(() => this.profileDataSaved = true)
     );
   }
-
-  // userLoggedInRefreshed(): Observable<void> {
-  //   return this.userLoggedInRefreshed$;
-  // }
 
   set profileDataSaved(saved: boolean) {
     this.profileDataSavedVar = saved;
@@ -115,9 +82,5 @@ export class UserService {
   get profileDataSaved() {
     return this.profileDataSavedVar;
   }
-
-  // get userLoggedIn() {
-  //   return this.userLoggedInVar;
-  // }
 
 }

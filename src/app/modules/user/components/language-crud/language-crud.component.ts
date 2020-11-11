@@ -35,7 +35,7 @@ export class LanguageCrudComponent implements OnInit {
   public languageNames = Object.values(LANGUAGES);
   public languageLevels = Object.values(LANGUAGE_LEVELS);
 
-  constructor(private store$: Store<AppStore>, private fb: FormBuilder, private activatedRoute: ActivatedRoute, private router: Router) { }
+  constructor(private store$: Store<AppStore>, private fb: FormBuilder, private router: Router) { }
 
   ngOnInit(): void {
 

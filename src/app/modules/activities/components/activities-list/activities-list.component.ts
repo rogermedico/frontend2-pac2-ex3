@@ -4,7 +4,7 @@ import { Activity } from '@models/activity.model';
 import { AppStore } from '@models/store.model';
 import { User } from '@models/user.model';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import * as UserSelectors from '@store/user/user.selector';
 import * as ActivitySelectors from '@store/activity/activity.selector';
 import * as ActivityActions from '@store/activity/activity.action';
@@ -20,14 +20,17 @@ export class ActivitiesListComponent implements OnInit {
   public activities: Activity[];
   public user: User;
   public userLoggedIn$: Observable<User> = this.store$.select(UserSelectors.selectUser);
+  public userSubscription: Subscription;
   public activities$: Observable<Activity[]> = this.store$.select(ActivitySelectors.selectActivities);
+  public activitiesSubscription: Subscription;
+
 
   constructor(private store$: Store<AppStore>, private router: Router) { }
 
   ngOnInit(): void {
 
-    this.userLoggedIn$.subscribe(userLoggedIn => this.user = userLoggedIn);
-    this.activities$.subscribe(activities => {
+    this.userSubscription = this.userLoggedIn$.subscribe(userLoggedIn => this.user = userLoggedIn);
+    this.activitiesSubscription = this.activities$.subscribe(activities => {
       if (this.router.url === '/favorites') {
         this.activities = activities.filter(ac => this.user.favoriteActivities.find(faId => faId === ac.id));
       }
@@ -39,6 +42,11 @@ export class ActivitiesListComponent implements OnInit {
       }
     });
 
+  }
+
+  ngOnDestroy(): void {
+    this.userSubscription.unsubscribe();
+    this.activitiesSubscription.unsubscribe();
   }
 
   showDetails(ac: Activity) {

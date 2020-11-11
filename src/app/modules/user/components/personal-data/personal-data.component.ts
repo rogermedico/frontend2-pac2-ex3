@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NATIONALITIES } from '@constants/nationalities.constant';
 import { AppStore } from '@models/store.model';
 import { User } from '@models/user.model';
 import { Store } from '@ngrx/store';
 import { nifValidator } from '@validators/nif.validator';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import * as UserSelectors from '@store/user/user.selector';
 import { take, tap } from 'rxjs/operators';
 import { USER_TYPES } from '@constants/user-types.constant';
@@ -18,7 +18,7 @@ import { UserService } from '@services/user.service';
   templateUrl: './personal-data.component.html',
   styleUrls: ['./personal-data.component.css']
 })
-export class PersonalDataComponent implements OnInit {
+export class PersonalDataComponent implements OnInit, OnDestroy {
 
   public title: string = 'Profile';
   public aboutMePlaceholder = 'About me...';
@@ -26,6 +26,7 @@ export class PersonalDataComponent implements OnInit {
   public userTypes = USER_TYPES;
   public user: User;
   public userLoggedIn$: Observable<User> = this.store$.select(UserSelectors.selectUser);
+  public userSubscriber: Subscription;
   public profileSaved: Boolean = false;
   public profileForm: FormGroup;
 
@@ -33,7 +34,7 @@ export class PersonalDataComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.userLoggedIn$.pipe(
+    this.userSubscriber = this.userLoggedIn$.pipe(
       take(1),
       tap(user => this.createForm(user))
     ).subscribe();
@@ -42,6 +43,10 @@ export class PersonalDataComponent implements OnInit {
       () => this.us.profileDataSaved = false
     );
 
+  }
+
+  ngOnDestroy(): void {
+    this.userSubscriber.unsubscribe();
   }
 
   createForm(u: User) {

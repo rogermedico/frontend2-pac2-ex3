@@ -1,9 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { User } from '@models/user.model';
-import { Login } from '@models/login.model';
 import { Activity } from '@models/activity.model';
-import { Language } from '@models/language.model';
-import { Education } from '@models/education.model';
 
 export enum ActivityActionTypes {
   ACTIVITIES_LOAD = '[Activity] ACTIVITIES_LOAD',

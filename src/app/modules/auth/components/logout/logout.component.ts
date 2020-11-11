@@ -16,12 +16,12 @@ import { map, take } from 'rxjs/operators';
 export class LogoutComponent implements OnInit, OnDestroy {
 
   public userLoggedIn$: Observable<User> = this.store$.select(UserSelectors.selectUser);
-  private userLoggedInSubscriber: Subscription;
+  private userSubscription: Subscription;
 
   constructor(private store$: Store<AppStore>, private router: Router) { }
 
   ngOnInit(): void {
-    this.userLoggedInSubscriber = this.userLoggedIn$.pipe(
+    this.userSubscription = this.userLoggedIn$.pipe(
       take(1),
       map(user => {
         this.store$.dispatch(AuthActions.AuthLogout({ user: user }))
@@ -32,7 +32,7 @@ export class LogoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.userLoggedInSubscriber.unsubscribe();
+    this.userSubscription.unsubscribe();
   }
 
 }

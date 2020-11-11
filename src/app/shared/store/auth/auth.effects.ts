@@ -7,8 +7,6 @@ import * as UserActions from '@store/user/user.action';
 import { UserService } from '@services/user.service';
 import { User } from '@models/user.model';
 import { Login } from '@models/login.model';
-import { USER_TYPES } from '@constants/user-types.constant';
-import { userReducer } from '@store/user/user.reducer';
 
 @Injectable()
 export class AuthEffects {

@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Activity } from '@models/activity.model';
 import { AppStore } from '@models/store.model';
 import { User } from '@models/user.model';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subscriber, Subscription } from 'rxjs';
 import * as UserSelectors from '@store/user/user.selector';
 import * as ActivitySelectors from '@store/activity/activity.selector';
 import * as UserActions from '@store/user/user.action';
@@ -17,7 +17,7 @@ import { ActivityState } from '@store/activity/activity.state';
   templateUrl: './activities-details.component.html',
   styleUrls: ['./activities-details.component.css']
 })
-export class ActivitiesDetailsComponent implements OnInit {
+export class ActivitiesDetailsComponent implements OnInit, OnDestroy {
 
   public title: String = 'Activity Details';
   public activity: Activity;
@@ -25,13 +25,15 @@ export class ActivitiesDetailsComponent implements OnInit {
   public favorite: boolean;
   public status: string;
   public userLoggedIn$: Observable<User> = this.store$.select(UserSelectors.selectUser);
+  public userSubscription: Subscription;
   public activityState$: Observable<ActivityState> = this.store$.select(ActivitySelectors.selectAllActivityState);
+  public activityStateSubscription: Subscription;
 
   constructor(private store$: Store<AppStore>) { }
 
   ngOnInit(): void {
 
-    this.userLoggedIn$.pipe(
+    this.userSubscription = this.userLoggedIn$.pipe(
       skipWhile(user => user === null),
       map(userLoggedIn => {
         this.user = userLoggedIn;
@@ -44,7 +46,7 @@ export class ActivitiesDetailsComponent implements OnInit {
       })
     ).subscribe();
 
-    this.activityState$.pipe(
+    this.activityStateSubscription = this.activityState$.pipe(
       skipWhile(activityState => activityState.loading === true),
       map(activityState => {
         const activity = activityState.activities.find(ac => ac.id === activityState.activityToShow);
@@ -61,6 +63,11 @@ export class ActivitiesDetailsComponent implements OnInit {
       })
     ).subscribe();
 
+  }
+
+  ngOnDestroy() {
+    this.userSubscription.unsubscribe();
+    this.activityStateSubscription.unsubscribe();
   }
 
   checkStatus(ac: Activity) {
