@@ -16,9 +16,7 @@ export class UserService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  private profileDataSavedVar: boolean = true;
-
-  constructor(private http: HttpClient, private as: ActivitiesService) { }
+  constructor(private http: HttpClient) { }
 
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(API.users);
@@ -63,24 +61,13 @@ export class UserService {
         else {
           throw 'register error';
         }
-
       })
     );
 
   }
 
   updateUser(user: User): Observable<any> {
-    return this.http.put(API.users, user, this.httpOptions).pipe(
-      tap(() => this.profileDataSaved = true)
-    );
-  }
-
-  set profileDataSaved(saved: boolean) {
-    this.profileDataSavedVar = saved;
-  }
-
-  get profileDataSaved() {
-    return this.profileDataSavedVar;
+    return this.http.put(API.users, user, this.httpOptions);
   }
 
 }

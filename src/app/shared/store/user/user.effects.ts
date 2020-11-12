@@ -42,6 +42,24 @@ export class UserEffects {
     catchError(err => of({ type: UserActions.UserActionTypes.USER_SIGNOUT_ERROR, err: err }))
   ));
 
+  /* modify personal data */
+  modifyPersonalData$ = createEffect(() => this.actions$.pipe(
+    ofType(UserActions.UserActionTypes.USER_MODIFY_PERSONAL_DATA),
+    map(() => {
+      return { type: UserActions.UserActionTypes.USER_MODIFY_PERSONAL_DATA_SUCCESS }
+    }),
+    catchError(err => of({ type: UserActions.UserActionTypes.USER_MODIFY_PERSONAL_DATA_ERROR, err: err }))
+  ));
+
+  /* discard personal data changes*/
+  discardPersonalDataChanges$ = createEffect(() => this.actions$.pipe(
+    ofType(UserActions.UserActionTypes.USER_DISCARD_PERSONAL_DATA_CHANGES),
+    map(() => {
+      return { type: UserActions.UserActionTypes.USER_DISCARD_PERSONAL_DATA_CHANGES_SUCCESS }
+    }),
+    catchError(err => of({ type: UserActions.UserActionTypes.USER_DISCARD_PERSONAL_DATA_CHANGES_ERROR, err: err }))
+  ));
+
   /* update personal data */
   updatePersonalData$ = createEffect(() => this.actions$.pipe(
     ofType(UserActions.UserActionTypes.USER_UPDATE_PERSONAL_DATA),

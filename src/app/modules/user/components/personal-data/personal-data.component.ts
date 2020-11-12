@@ -7,10 +7,11 @@ import { Store } from '@ngrx/store';
 import { nifValidator } from '@validators/nif.validator';
 import { Observable, Subscription } from 'rxjs';
 import * as UserSelectors from '@store/user/user.selector';
-import { take, tap } from 'rxjs/operators';
+import { map, take, tap } from 'rxjs/operators';
 import { USER_TYPES } from '@constants/user-types.constant';
 import * as UserActions from '@store/user/user.action';
 import { UserService } from '@services/user.service';
+import { UserState } from '@store/user/user.state';
 
 
 @Component({
@@ -27,8 +28,11 @@ export class PersonalDataComponent implements OnInit, OnDestroy {
   public user: User;
   public userLoggedIn$: Observable<User> = this.store$.select(UserSelectors.selectUser);
   public userSubscriber: Subscription;
+  public userSate$: Observable<UserState> = this.store$.select(UserSelectors.selectUserState);
+  public userStateSubscriber: Subscription;
   public profileSaved: Boolean = false;
   public profileForm: FormGroup;
+  public profileFormValueChangesSubscriber: Subscription;
 
   constructor(private store$: Store<AppStore>, private fb: FormBuilder, private us: UserService) { }
 
@@ -36,17 +40,30 @@ export class PersonalDataComponent implements OnInit, OnDestroy {
 
     this.userSubscriber = this.userLoggedIn$.pipe(
       take(1),
+      tap(user => this.user = user),
       tap(user => this.createForm(user))
     ).subscribe();
 
-    this.profileForm.valueChanges.subscribe(
-      () => this.us.profileDataSaved = false
-    );
+    this.profileFormValueChangesSubscriber = this.profileForm.valueChanges.pipe(
+      map(() => this.userStateSubscriber = this.userSate$.pipe(
+        take(1),
+        map(us => {
+          if (!us.edited) this.store$.dispatch(UserActions.UserModifyPersonalData())
+        })
+      ).subscribe()
+      )
+    ).subscribe();
+
+    // this.profileFormValueChangesSubscriber = this.profileForm.valueChanges.subscribe(
+    //   () => this.us.profileDataSaved = false
+    // );
 
   }
 
   ngOnDestroy(): void {
     this.userSubscriber.unsubscribe();
+    if (this.userStateSubscriber) this.userStateSubscriber.unsubscribe();
+    this.profileFormValueChangesSubscriber.unsubscribe();
   }
 
   createForm(u: User) {
@@ -72,70 +89,45 @@ export class PersonalDataComponent implements OnInit, OnDestroy {
   }
 
   updateProfile() {
-    this.userLoggedIn$.pipe(
-      take(1)
-    ).subscribe(u => {
-      if (this.profileForm.valid) {
-        const user: User = {
-          ...u,
-          name: this.name.value,
-          surname: this.surname.value,
-          birthDate: this.birthDate.value,
-          phone: this.phone.value,
-          nationality: this.nationality.value,
-          nif: this.nif.value,
-          aboutMe: this.aboutMe.value !== this.aboutMePlaceholder ? this.aboutMe.value : null,
-        }
-        if (u.type === this.userTypes.company) {
-          user.companyName = this.companyName.value;
-          user.companyDescription = this.companyDescription.value;
-          user.cif = this.cif.value;
-        }
-
-        this.us.profileDataSaved = true;
-        this.store$.dispatch(UserActions.UserUpdatePersonalData({ user: user }));
+    if (this.profileForm.valid) {
+      const user: User = {
+        ...this.user,
+        name: this.name.value,
+        surname: this.surname.value,
+        birthDate: this.birthDate.value,
+        phone: this.phone.value,
+        nationality: this.nationality.value,
+        nif: this.nif.value,
+        aboutMe: this.aboutMe.value !== this.aboutMePlaceholder ? this.aboutMe.value : null,
       }
-    })
+      if (this.user.type === this.userTypes.company) {
+        user.companyName = this.companyName.value;
+        user.companyDescription = this.companyDescription.value;
+        user.cif = this.cif.value;
+      }
+
+      this.store$.dispatch(UserActions.UserUpdatePersonalData({ user: user }));
+    }
   }
 
-  get name() {
-    return this.profileForm.get('name');
-  }
+  get name() { return this.profileForm.get('name'); }
 
-  get surname() {
-    return this.profileForm.get('surname');
-  }
+  get surname() { return this.profileForm.get('surname'); }
 
-  get birthDate() {
-    return this.profileForm.get('birthDate');
-  }
+  get birthDate() { return this.profileForm.get('birthDate'); }
 
-  get phone() {
-    return this.profileForm.get('phone');
-  }
+  get phone() { return this.profileForm.get('phone'); }
 
-  get nationality() {
-    return this.profileForm.get('nationality');
-  }
+  get nationality() { return this.profileForm.get('nationality'); }
 
-  get nif() {
-    return this.profileForm.get('nif');
-  }
+  get nif() { return this.profileForm.get('nif'); }
 
-  get aboutMe() {
-    return this.profileForm.get('aboutMe');
-  }
+  get aboutMe() { return this.profileForm.get('aboutMe'); }
 
-  get companyName() {
-    return this.profileForm.get('companyName');
-  }
+  get companyName() { return this.profileForm.get('companyName'); }
 
-  get companyDescription() {
-    return this.profileForm.get('companyDescription');
-  }
+  get companyDescription() { return this.profileForm.get('companyDescription'); }
 
-  get cif() {
-    return this.profileForm.get('cif');
-  }
+  get cif() { return this.profileForm.get('cif'); }
 
 }

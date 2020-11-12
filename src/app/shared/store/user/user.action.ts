@@ -13,6 +13,14 @@ export enum UserActionTypes {
   USER_SIGNOUT_SUCCESS = '[User] USER_SIGNOUT_SUCCESS',
   USER_SIGNOUT_ERROR = '[User] USER_SIGNOUT_ERROR',
 
+  USER_MODIFY_PERSONAL_DATA = '[User/Profile] USER_MODIFY_PERSONAL_DATA',
+  USER_MODIFY_PERSONAL_DATA_SUCCESS = '[User/Profile] USER_MODIFY_PERSONAL_DATA_SUCCESS',
+  USER_MODIFY_PERSONAL_DATA_ERROR = '[User/Profile] USER_MODIFY_PERSONAL_DATA_ERROR',
+
+  USER_DISCARD_PERSONAL_DATA_CHANGES = '[User/Profile] USER_DISCARD_PERSONAL_DATA_CHANGES',
+  USER_DISCARD_PERSONAL_DATA_CHANGES_SUCCESS = '[User/Profile] USER_DISCARD_PERSONAL_DATA_CHANGES_SUCCESS',
+  USER_DISCARD_PERSONAL_DATA_CHANGES_ERROR = '[User/Profile] USER_DISCARD_PERSONAL_DATA_CHANGES_ERROR',
+
   USER_UPDATE_PERSONAL_DATA = '[User/Profile] USER_UPDATE_PERSONAL_DATA',
   USER_UPDATE_PERSONAL_DATA_SUCCESS = '[User/Profile] USER_UPDATE_PERSONAL_DATA_SUCCESS',
   USER_UPDATE_PERSONAL_DATA_ERROR = '[User/Profile] USER_UPDATE_PERSONAL_DATA_ERROR',
@@ -59,6 +67,16 @@ export const UserSigninError = createAction(UserActionTypes.USER_SIGNIN_ERROR, p
 export const UserSignout = createAction(UserActionTypes.USER_SIGNOUT);
 export const UserSignoutSuccess = createAction(UserActionTypes.USER_SIGNOUT_SUCCESS);
 export const UserSignoutError = createAction(UserActionTypes.USER_SIGNOUT_ERROR, props<{ err: String }>());
+
+/* user modify profile */
+export const UserModifyPersonalData = createAction(UserActionTypes.USER_MODIFY_PERSONAL_DATA);
+export const UserModifyPersonalDataSuccess = createAction(UserActionTypes.USER_MODIFY_PERSONAL_DATA_SUCCESS);
+export const UserModifyPersonalDataError = createAction(UserActionTypes.USER_MODIFY_PERSONAL_DATA_ERROR, props<{ err: String }>());
+
+/* user discard profile changes */
+export const UserDiscardPersonalDataChanges = createAction(UserActionTypes.USER_DISCARD_PERSONAL_DATA_CHANGES);
+export const UserDiscardPersonalDataChangesSuccess = createAction(UserActionTypes.USER_DISCARD_PERSONAL_DATA_CHANGES_SUCCESS);
+export const UserDiscardPersonalDataChangesError = createAction(UserActionTypes.USER_DISCARD_PERSONAL_DATA_CHANGES_ERROR, props<{ err: String }>());
 
 /* user update profile */
 export const UserUpdatePersonalData = createAction(UserActionTypes.USER_UPDATE_PERSONAL_DATA, props<{ user: User }>());
