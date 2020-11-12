@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Language } from '@models/language.model';
-import { AppStore } from '@models/store.model';
+import { AppStore } from '@store/root.state';
 import { User } from '@models/user.model';
 import { Store } from '@ngrx/store';
 import { UserService } from '@services/user.service';

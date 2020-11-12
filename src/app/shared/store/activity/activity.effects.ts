@@ -27,8 +27,8 @@ export class ActivityEffects {
     ofType(ActivityActions.ActivityActionTypes.ACTIVITY_CREATE),
     mergeMap((action: { type: string, activity: Activity }) => {
       return this.as.createActivity(action.activity).pipe(
-        map(() => {
-          return { type: ActivityActions.ActivityActionTypes.ACTIVITY_CREATE_SUCCESS, activity: action.activity }
+        map(activity => {
+          return { type: ActivityActions.ActivityActionTypes.ACTIVITY_CREATE_SUCCESS, activity: activity }
         }),
         catchError(err => of({ type: ActivityActions.ActivityActionTypes.ACTIVITY_CREATE_ERROR, err: err }))
       )

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { USER_TYPES } from '@constants/user-types.constant';
 import { User } from "@models/user.model";
 import { Store } from '@ngrx/store';
-import { AppStore } from '@models/store.model';
+import { AppStore } from '@store/root.state';
 import * as AuthActions from '@store/auth/auth.action';
 import * as AuthSelectors from '@store/auth/auth.selector';
 import { Observable, Subscription } from 'rxjs';

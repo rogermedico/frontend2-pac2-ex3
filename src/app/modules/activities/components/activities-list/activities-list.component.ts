@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Activity } from '@models/activity.model';
-import { AppStore } from '@models/store.model';
+import { AppStore } from '@store/root.state';
 import { User } from '@models/user.model';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AppStore } from '@models/store.model';
+import { AppStore } from '@store/root.state';
 import { User } from '@models/user.model';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';

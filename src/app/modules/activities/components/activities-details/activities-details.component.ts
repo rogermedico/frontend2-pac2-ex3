@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Activity } from '@models/activity.model';
-import { AppStore } from '@models/store.model';
+import { AppStore } from '@store/root.state';
 import { User } from '@models/user.model';
 import { Store } from '@ngrx/store';
 import { Observable, Subscriber, Subscription } from 'rxjs';

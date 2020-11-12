@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { CanDeactivate } from '@angular/router';
 import { ProfileComponent } from '@modules/user/components/profile/profile.component';
 import { UserState } from '@store/user/user.state';
-import { AppStore } from '@models/store.model';
+import { AppStore } from '@store/root.state';
 import * as UserSelectors from '@store/user/user.selector';
 import * as UserActions from '@store/user/user.action';
 import { Store } from '@ngrx/store';

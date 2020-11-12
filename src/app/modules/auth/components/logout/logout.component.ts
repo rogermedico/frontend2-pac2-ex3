@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AppStore } from '@models/store.model';
+import { AppStore } from '@store/root.state';
 import { Store } from '@ngrx/store';
 import * as AuthActions from '@store/auth/auth.action';
 import * as UserSelectors from '@store/user/user.selector';

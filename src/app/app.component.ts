@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AppStore } from '@models/store.model';
+import { AppStore } from '@store/root.state';
 import { Store } from '@ngrx/store';
 import * as ActivityActions from '@store/activity/activity.action';
 

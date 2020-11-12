@@ -1,5 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { AppStore } from '@models/store.model';
+import { AppStore } from '@store/root.state';
 import { UserState } from '@store/user/user.state';
 
 

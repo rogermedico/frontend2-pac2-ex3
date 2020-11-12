@@ -2,7 +2,7 @@ import { CanActivate, Router } from "@angular/router";
 import { Injectable } from "@angular/core";
 import { Observable } from 'rxjs';
 import * as AuthSelectors from '@store/auth/auth.selector';
-import { AppStore } from '@models/store.model';
+import { AppStore } from '@store/root.state';
 import { Store } from '@ngrx/store';
 import { AuthState } from '@store/auth/auth.state';
 import { map } from 'rxjs/operators';

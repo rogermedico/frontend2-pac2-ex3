@@ -1,7 +1,7 @@
 import { CanActivate } from "@angular/router";
 import { Injectable } from "@angular/core";
 import { Observable } from 'rxjs';
-import { AppStore } from '@models/store.model';
+import { AppStore } from '@store/root.state';
 import { Store } from '@ngrx/store';
 import * as UserSelectors from '@store/user/user.selector';
 import { User } from '@models/user.model';

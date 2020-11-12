@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { LANGUAGES, LANGUAGE_LEVELS } from '@constants/language.constant';
 import { Language } from '@models/language.model';
-import { AppStore } from '@models/store.model';
+import { AppStore } from '@store/root.state';
 import { User } from '@models/user.model';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
@@ -35,13 +35,11 @@ export class LanguageCrudComponent implements OnInit {
   public languageNames = Object.values(LANGUAGES);
   public languageLevels = Object.values(LANGUAGE_LEVELS);
 
-  constructor(private store$: Store<AppStore>, private fb: FormBuilder, private router: Router) { }
+  constructor(private store$: Store<AppStore>, private fb: FormBuilder, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
 
     this.routeParamsSubscription = this.RouteParams$.subscribe(p => this.languageIndex = p.id);
-    // this.languageIndex = parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
-    // this.languageIndex = Number.isNaN(this.languageIndex) ? null : this.languageIndex;
 
     this.userSubscription = this.userLoggedIn$.subscribe(u => {
       if ((this.languageIndex != null) && (this.languageIndex >= 0) && (this.languageIndex < u.languages.length)) {

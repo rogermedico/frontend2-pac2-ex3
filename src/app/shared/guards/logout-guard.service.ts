@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { AuthState } from '@store/auth/auth.state';
 import * as AuthSelectors from '@store/auth/auth.selector';
 import { Store } from '@ngrx/store';
-import { AppStore } from '@models/store.model';
+import { AppStore } from '@store/root.state';
 import { map } from 'rxjs/operators';
 
 @Injectable({

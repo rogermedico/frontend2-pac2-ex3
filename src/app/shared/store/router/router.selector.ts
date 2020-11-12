@@ -1,7 +1,8 @@
-import { AppStore } from '@models/store.model';
 import * as fromRouter from '@ngrx/router-store';
 import { createSelector, createFeatureSelector } from '@ngrx/store';
+import { AppStore } from '@store/root.state';
+import { RouterStateUrl } from './router.state';
 
-export const selectRouter = createFeatureSelector<AppStore, fromRouter.RouterReducerState<any>>('routerState');
+export const selectRouterState = createFeatureSelector<AppStore, fromRouter.RouterReducerState<RouterStateUrl>>('routerReducer');
 
-export const selectParams = createSelector(selectRouter, state => state.state.params);
+export const selectParams = createSelector(selectRouterState, routerReducer => routerReducer.state.params);

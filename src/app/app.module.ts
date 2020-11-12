@@ -9,12 +9,13 @@ import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './shared/services/in-memory-data.service';
 
 /* ngrx */
-import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { StoreRouterConnectingModule, RouterStateSerializer } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { reducers } from '@store/root.reducer';
 import { effects } from '@store/root.effects';
+import { CustomSerializer } from '@store/router/custom-router-serializer';
 
 /* components */
 import { AppRoutingModule } from './app-routing.module';
@@ -23,8 +24,9 @@ import { HomeComponent } from '@views/home/home.component';
 import { HeaderComponent } from '@views/header/header.component';
 import { FooterComponent } from '@views/footer/footer.component';
 
+/* modules */
 import { ActivitiesModule } from './modules/activities/activities.module';
-import { CustomSerializer } from '@store/router/custom-router-serializer';
+import { environment } from 'environments/environment';
 
 
 @NgModule({
@@ -50,10 +52,9 @@ import { CustomSerializer } from '@store/router/custom-router-serializer';
 
     /* router in state */
     StoreRouterConnectingModule.forRoot({
-      stateKey: 'router',
       serializer: CustomSerializer
     }),
-    StoreDevtoolsModule.instrument(),
+    environment.production ? [] : StoreDevtoolsModule.instrument(),
   ],
   providers: [],
   bootstrap: [AppComponent]

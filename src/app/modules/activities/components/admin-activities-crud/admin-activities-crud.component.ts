@@ -5,7 +5,7 @@ import { CATEGORY_TYPES } from '@constants/category-types.constant';
 import { LANGUAGES } from '@constants/language.constant';
 import { SUBCATEGORY_TYPES_BEACH, SUBCATEGORY_TYPES_CULTURE, SUBCATEGORY_TYPES_ENOTURISME } from '@constants/subcategory-types.constant';
 import { Activity } from '@models/activity.model';
-import { AppStore } from '@models/store.model';
+import { AppStore } from '@store/root.state';
 import { User } from '@models/user.model';
 import { Store } from '@ngrx/store';
 import { ActivitiesService } from '@services/activities.service';

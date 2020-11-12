@@ -5,7 +5,7 @@ import { User } from '@models/user.model';
 import { Observable, Subscription } from 'rxjs';
 import * as UserSelectors from '@store/user/user.selector';
 import * as UserActions from '@store/user/user.action';
-import { AppStore } from '@models/store.model';
+import { AppStore } from '@store/root.state';
 import { Store } from '@ngrx/store';
 import { take } from 'rxjs/operators';
 

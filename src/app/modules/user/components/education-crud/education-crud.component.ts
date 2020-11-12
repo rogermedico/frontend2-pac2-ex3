@@ -8,7 +8,7 @@ import { Observable, Subscription } from 'rxjs';
 import * as UserSelectors from '@store/user/user.selector';
 import * as UserActions from '@store/user/user.action';
 import { take } from 'rxjs/operators';
-import { AppStore } from '@models/store.model';
+import { AppStore } from '@store/root.state';
 import { Store } from '@ngrx/store';
 import * as RouterSelectors from '@store/router/router.selector';
 
@@ -42,9 +42,6 @@ export class EducationCrudComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     this.routeParamsSubscription = this.RouteParams$.subscribe(p => this.educationIndex = p.id);
-
-    // this.educationIndex = parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
-    // this.educationIndex = Number.isNaN(this.educationIndex) ? null : this.educationIndex;
 
     this.userSubscription = this.userLoggedIn$.subscribe(u => {
       if ((this.educationIndex != null) && (this.educationIndex >= 0) && (this.educationIndex < u.education.length)) {

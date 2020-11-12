@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NATIONALITIES } from '@constants/nationalities.constant';
-import { AppStore } from '@models/store.model';
+import { AppStore } from '@store/root.state';
 import { User } from '@models/user.model';
 import { Store } from '@ngrx/store';
 import { nifValidator } from '@validators/nif.validator';
@@ -53,10 +53,6 @@ export class PersonalDataComponent implements OnInit, OnDestroy {
       ).subscribe()
       )
     ).subscribe();
-
-    // this.profileFormValueChangesSubscriber = this.profileForm.valueChanges.subscribe(
-    //   () => this.us.profileDataSaved = false
-    // );
 
   }
 

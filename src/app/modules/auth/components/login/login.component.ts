@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Router } from '@angular/router';
 import { Login } from '@models/login.model';
 import { Store } from '@ngrx/store';
-import { AppStore } from '@models/store.model';
+import { AppStore } from '@store/root.state';
 import * as AuthActions from '@store/auth/auth.action';
 import * as AuthSelectors from '@store/auth/auth.selector';
 import { Observable, Subscription } from 'rxjs';
