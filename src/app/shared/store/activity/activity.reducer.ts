@@ -82,7 +82,7 @@ const _activityReducer = createReducer(defaultActivityState,
     return {
       ...state,
       activities: state.activities.map(a => {
-        if (a.id === activity.id) return activity;
+        if (a.id == activity.id) return activity;
         else return a;
       }),
       loading: false,
