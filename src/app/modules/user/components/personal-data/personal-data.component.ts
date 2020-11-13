@@ -76,7 +76,7 @@ export class PersonalDataComponent implements OnInit, OnDestroy {
         validators: nifValidator
       }
     );
-    if (u.type === 'company') {
+    if (u.type === USER_TYPES.company) {
       this.profileForm.addControl('companyName', this.fb.control(u.companyName, [Validators.required, Validators.minLength(3), Validators.maxLength(55), Validators.pattern('^(?![ ])(?!.*[ ]$)[a-zA-Z ]+$')]));
       this.profileForm.addControl('companyDescription', this.fb.control(u.companyDescription));
       this.profileForm.addControl('cif', this.fb.control(u.cif));

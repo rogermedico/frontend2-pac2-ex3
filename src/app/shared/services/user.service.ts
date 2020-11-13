@@ -4,7 +4,6 @@ import { Observable, of, Subject } from "rxjs";
 import { map, mergeMap, tap } from "rxjs/operators";
 import { User } from '@models/user.model';
 import { API } from '@constants/api.constant';
-import { ActivitiesService } from '@services/activities.service';
 import { Login } from '@models/login.model';
 
 @Injectable({

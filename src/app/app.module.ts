@@ -54,7 +54,10 @@ import { environment } from 'environments/environment';
     StoreRouterConnectingModule.forRoot({
       serializer: CustomSerializer
     }),
-    environment.production ? [] : StoreDevtoolsModule.instrument(),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]

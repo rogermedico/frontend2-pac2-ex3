@@ -85,7 +85,6 @@ export class AdminActivitiesCrudComponent implements OnInit, OnDestroy {
       })
     ).subscribe();
 
-
   }
 
   ngOnDestroy(): void {
